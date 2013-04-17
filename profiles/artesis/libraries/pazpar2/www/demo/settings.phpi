@@ -1,0 +1,13 @@
+<?php
+
+/* $Id: settings.phpi,v 1.3 2007-01-05 13:45:35 sondberg Exp $
+ * -------------------------------------------------
+ * Global settings for the Keystone Retriever
+ */
+
+
+// Display a status bar in the user interface:
+$show_status = 0;
+
+
+?>

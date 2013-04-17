@@ -1,0 +1,11 @@
+name = "Tracking Code"
+description = "Provides an interface for adding tracking code snippets into pages using block-like visibility"
+package = Statistics
+core = 7.x
+
+; Information added by drupal.org packaging script on 2012-11-01
+version = "7.x-1.3"
+core = "7.x"
+project = "tracking_code"
+datestamp = "1351795962"
+

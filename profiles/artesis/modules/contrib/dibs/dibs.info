@@ -1,0 +1,12 @@
+name = DIBS
+description = An API module that makes it possible for other modules to receive payments via DIBS Payment Gateway
+core = 7.x
+package = "dibs"
+configure = "admin/config/payment/dibs"
+
+; Information added by drupal.org packaging script on 2011-07-28
+version = "7.x-1.0-beta1"
+core = "7.x"
+project = "dibs"
+datestamp = "1311887815"
+

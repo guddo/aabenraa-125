@@ -1,0 +1,157 @@
+<?php
+/**
+ * @file
+ * Integrate DIBS payment gateway with Drupal Commerce
+ */
+
+/**
+ * Implementation of hook_dibsapi().
+ */
+function commerce_dibs_dibsapi($op = 'info', $delta = NULL, &$transaction = NULL, $a3 = NULL, $a4 = NULL) {
+  switch ($op) {
+    case 'info':
+      $info['commerce_dibs'] = array('info' => t('Commerce dibs'));
+      if (!empty($delta)) {
+        return isset($info[$delta]) ? $info[$delta] : NULL;
+      }
+      else {
+        return $info;
+      }
+      break;
+    case 'transaction_cancel':
+      $commerce_transaction = commerce_payment_transaction_load($transaction['params']['commerce_transaction_id']);
+      $order = commerce_order_load($transaction['params']['commerce_order_id']);
+
+      if ($order && $commerce_transaction) {
+        drupal_set_message(t('You have canceled your payment at DIBS'), 'warning');
+        $commerce_transaction->message = 'Declined payment';
+        $commerce_transaction->status = COMMERCE_PAYMENT_STATUS_FAILURE;
+        commerce_payment_transaction_save($commerce_transaction);
+        drupal_goto('checkout/' . $order->order_id . '/payment/back/' . $transaction['params']['payment_redirect_key']);
+      }
+      else {
+        // TODO: Set error message.
+      }
+      break;
+    case 'transaction_accept':
+      $commerce_transaction = commerce_payment_transaction_load($transaction['params']['commerce_transaction_id']);
+      $order = commerce_order_load($transaction['params']['commerce_order_id']);
+
+      if ($order && $commerce_transaction) {
+        if ($commerce_transaction->status == COMMERCE_PAYMENT_STATUS_SUCCESS) {
+          drupal_goto('checkout/' . $order->order_id . '/payment/return/' . $transaction['params']['payment_redirect_key']);
+        }
+        else {
+          drupal_set_message(t('Unable to verify your payment, please try again.'), 'error');
+          drupal_goto('checkout/' . $order->order_id . '/payment/back/' . $transaction['params']['payment_redirect_key']);
+        }
+      }
+      else {
+        // TODO: Set error message.
+      }
+      break;
+    case 'transaction_callback':
+      $commerce_transaction = commerce_payment_transaction_load($transaction['params']['commerce_transaction_id']);
+
+      if ($commerce_transaction) {
+        $commerce_transaction->message = 'Payment completed at DIBS';
+        $commerce_transaction->status = COMMERCE_PAYMENT_STATUS_SUCCESS;
+        commerce_payment_transaction_save($commerce_transaction);
+      }
+      break;
+  }
+}
+
+/**
+ * Implements hook_commerce_payment_method_info().
+ */
+function commerce_dibs_commerce_payment_method_info() {
+  $payment_methods = array();
+
+  $payment_methods['commerce_dibs'] = array(
+    'title' => t('DIBS'),
+    'description' => t('Payment using the DIBS provider.'),
+    'display_title' => t('Credit card'),
+    'offsite' => TRUE,
+  );
+
+  return $payment_methods;
+}
+
+/**
+ * Payment method callback: settings form.
+ */
+function commerce_dibs_settings_form($settings = NULL) {
+  $form = array();
+
+  $form['info']['#markup'] = l(t('Setup commerce dibs'), 'admin/config/payment/dibs/edit/commerce_dibs/commerce_dibs');
+
+  return $form;
+}
+
+/**
+ * Payment method callback: redirect form, a wrapper around the module's general
+ *   use function for building a WPS form.
+ */
+function commerce_dibs_redirect_form($form, &$form_state, $order, $payment_method) {
+  // Save the transaction, so we know that it has been made in the commerce UI.
+  $order = commerce_order_load($order->order_id);
+  $order_wrapper = entity_metadata_wrapper('commerce_order', $order);
+  $transaction = commerce_payment_transaction_new('commerce_dibs', $order->order_id);
+  $transaction->instance_id = $payment_method['instance_id'];
+  $transaction->amount = $order_wrapper->commerce_order_total->amount->value();
+  $transaction->currency_code = $order_wrapper->commerce_order_total->currency_code->value();
+  $transaction->status = COMMERCE_PAYMENT_STATUS_PENDING;
+
+  commerce_payment_transaction_save($transaction);
+
+  /**
+  * Specifying array with payment info.
+  *
+  * The following info are required:
+  * - api_module
+  * - api_delta
+  * - payment_price (should be integer or float)
+  *
+  * Optional info with no fall back
+  * - order_info_short (string)
+  * - order_info_long (should be an array)
+  *
+  * Optional info with fall back on logged in user data
+  * - customer_uid (integer)
+  * - customer_name
+  * - customer_address
+  * - customer_address2
+  * - customer_city
+  * - customer_zipcode
+  * - customer_country
+  * - customer_email
+  * - customer_phone
+  *
+  * All info without type specified should be strings.
+  */
+
+  $currency_info = commerce_currency_load($transaction->currency_code);
+
+  $data = array(
+    'api_module'          => 'commerce_dibs',
+    'api_delta'           => 'commerce_dibs',
+    'payment_price'       => commerce_currency_amount_to_decimal($transaction->amount, $transaction->currency_code),
+    'payment_currency'    => $currency_info['numeric_code'],
+    'payment_order_id'    => '',
+    'params'              => array(
+                                   'commerce_order_id' => $order->order_id,
+                                   'commerce_transaction_id' => $transaction->transaction_id,
+                                   'payment_redirect_key' => $order->data['payment_redirect_key'],
+                                   ),
+  );
+
+  // Prepare the DIBS payment
+  $hash = dibs_payment_prepare($data, FALSE);
+  $dibs_transaction = dibs_transaction_hash_load($hash);
+  $settings = dibs_load_settings('commerce_dibs', 'commerce_dibs');
+
+  module_load_include('inc', 'dibs', 'dibs.frontend');
+
+  return drupal_get_form('dibs_frontend_redirect_form', $settings, $dibs_transaction);
+}

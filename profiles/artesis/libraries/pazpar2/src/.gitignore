@@ -1,0 +1,15 @@
+yaz
+pazpar2
+pazpar2_play
+Makefile
+Makefile.in
+config.h
+config.h.in
+.deps
+*.log
+*.o
+*.a
+*~
+stamp-h1
+test_sel_thread
+test_normalize

@@ -1,0 +1,195 @@
+.ting-search-carousel {
+  width: 100%;
+}
+
+.ting-search-carousel .search-controller {
+  height: 20px;
+  list-style: none outside none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.ting-search-carousel .search-controller li.active {
+  background: none repeat scroll 0 0 #918F91;
+}
+
+.ting-search-carousel .search-controller li {
+  background: none repeat scroll 0 0 #D1D9D7;
+  float: left;
+  font-size: 11px;
+  height: 18px;
+  line-height: 15px;
+  margin: -1px 2px 0 0;
+  padding: 0 17px;
+}
+
+.ting-search-carousel .search-controller li a {
+  font-size: 11px;
+  line-height: 15px;
+}
+
+.ting-search-carousel .ting-search-results {
+  position: relative;
+  height: 200px;
+}
+
+.ting-search-carousel .ting-search-results .subtitle {
+  font-size: 42px;
+  font-weight: normal;
+  line-height: 0.9;
+  margin: 10px 0 0 40px;
+  overflow: hidden;
+  padding: 10px 0 10px 10px;
+  text-transform: uppercase;
+  width: 250px;
+}
+
+.ting-search-carousel .ting-search-results .info {
+  height: 39px;
+  margin-top: -3px;
+  overflow: hidden;
+  width: 100px;
+}
+
+.ting-search-carousel .ting-search-results .info span {
+  display: block;
+  font-size: 10px;
+  line-height: 1.25;
+  text-align: center;
+}
+
+.ting-search-carousel .ting-rs-carousel, .subtitle {
+  float: left;
+}
+
+/* carousel */
+.ting-search-carousel .rs-carousel {
+  opacity: 1 !important;
+  overflow: hidden;
+  width: 580px;
+}
+
+.ting-search-carousel .rs-carousel .rs-carousel-mask {
+  position:relative;
+  height: 200px;
+}
+
+.ting-search-carousel .rs-carousel .rs-carousel-runner {
+  left: 0;
+  list-style: none;
+  margin: 0;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 580px;
+}
+
+.ting-search-carousel .rs-carousel .rs-carousel-item img {
+  max-width: 112px;
+  height: 140px;
+}
+.ting-search-carousel .no-js .rs-carousel .rs-carousel-runner {
+  position: static;
+}
+
+.ting-search-carousel .rs-carousel .rs-carousel-item {
+  float: left;
+  height: 180px;
+  overflow: hidden;
+  padding-top: 20px;
+  text-align: center;
+  padding-right: 16px;
+  width: 100px;
+}
+
+.ting-search-carousel .rs-carousel.rs-carousel-vertical .rs-carousel-item {
+  float: none;
+}
+
+/* pagination */
+.ting-search-carousel .rs-carousel-pagination {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ting-search-carousel .rs-carousel-disabled .rs-carousel-pagination {
+  display: none;
+}
+
+.ting-search-carousel .rs-carousel-pagination-link {
+  display: inline;
+}
+
+.ting-search-carousel .rs-carousel-pagination-link a {
+  padding: 2px 6px;
+}
+
+.ting-search-carousel .rs-carousel-pagination-link a:hover {
+  text-decoration: none;
+}
+
+.ting-search-carousel .rs-carousel-pagination-link-active a {
+  background: #444;
+}
+
+/* next & prev actions */
+.ting-search-carousel .rs-carousel-disabled .rs-carousel-action-next,
+.ting-search-carousel .rs-carousel-disabled .rs-carousel-action-prev {
+  display: none;
+}
+
+.ting-search-carousel .rs-carousel-action-next,
+.ting-search-carousel .rs-carousel-action-prev {
+  background-image: url('../images/buttons.png');
+  position: absolute;
+  top: 86px;
+  height: 35px;
+  outline: none;
+  text-indent: -9999px;
+  width: 35px;
+}
+
+.ting-search-carousel .rs-carousel-action-prev {
+  left: -15px;
+}
+
+.ting-search-carousel .rs-carousel-action-next {
+  right: -15px;
+  background-position: 0 -35px;
+}
+
+.ting-search-carousel .rs-carousel-action-prev:hover {
+  background-position: 70px 0;
+}
+
+.ting-search-carousel .rs-carousel-action-next:hover {
+  background-position: 70px -35px;
+}
+
+.ting-search-carousel .rs-carousel-action-disabled {
+  background-position: 35px 0 !important;
+}
+
+.ting-search-carousel .rs-carousel-action-prev + .rs-carousel-action-disabled  {
+  background-position: 35px -35px !important;
+}
+
+.ting-search-carousel .rs-carousel-action-disabled {
+  color: gray;
+  cursor: default;
+}
+
+.ting-search-carousel .rs-carousel-pagination {
+  display: none;
+}
+
+.search-carousel-query {
+  float: left;
+}
+
+.sort-hidden, .search-query-hidden {
+  display: none;
+}
+

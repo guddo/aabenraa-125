@@ -1,0 +1,92 @@
+<?php
+/**
+ * @file
+ * Install, update and uninstall functions.
+ */
+
+/**
+* Implements hook_schema().
+*/
+function mkdru_schema() {
+  $schema['mkdru'] = array(
+    'description' => 'Stores settings for mkdru nodes.',
+    'fields' => array(
+      'nid' => array(
+        'description' => 'The primary identifier for a node.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0
+       ),
+      'vid' => array(
+        'description' => 'The current {node_revisions}.vid version identifier.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0
+      ),
+      'settings' => array(
+        'type' => 'text',
+        'not null' => TRUE,
+        'description' => 'Metasearch settings',
+      ),
+    ),
+    'primary key' => array('nid', 'vid'),
+    'unique keys' => array('vid' => array('vid')),
+    'indexes' => array('nid' => array('nid')),
+  );
+  return $schema;
+}
+
+/**
+* Implements hook_install().
+*/
+function mkdru_install() {
+  // Disable attachments by default
+  variable_set('upload_mkdru', 0);
+  // Default to not promoting to front page
+  variable_set('node_options_mkdru', array('status'));
+  // Disable comments by default
+  variable_set('comment_mkdru', defined('COMMENT_NODE_HIDDEN') ? COMMENT_NODE_HIDDEN : NULL);
+
+
+  // Default settings
+  $settings['title'] = "";
+  $settings['pz2_path'] = "/pazpar2/search.pz2";
+  $settings['disable_ranking'] = 1;
+  $settings['use_sessions'] = 1;
+  $settings['sp']['user'] = "";
+  $settings['sp']['pass'] = "";
+  $settings['facets']['source']['displayName'] = "Source";
+  $settings['facets']['source']['pz2Name'] = "xtargets";
+  $settings['facets']['source']['limiter'] = NULL;
+  $settings['facets']['source']['multiLimit'] = 0;
+  $settings['facets']['source']['max'] = 10;
+  $settings['facets']['source']['orderWeight'] = 1;
+  $settings['facets']['subject']['displayName'] = "Subject";
+  $settings['facets']['subject']['pz2Name'] = "subject";
+  $settings['facets']['subject']['limiter'] = "su";
+  $settings['facets']['subject']['multiLimit'] = 1;
+  $settings['facets']['subject']['max'] = 10;
+  $settings['facets']['subject']['orderWeight'] = 2;
+  $settings['facets']['author']['displayName'] = "Author";
+  $settings['facets']['author']['pz2Name'] = "author";
+  $settings['facets']['author']['limiter'] = "au";
+  $settings['facets']['author']['multiLimit'] = 0;
+  $settings['facets']['author']['max'] = 10;
+  $settings['facets']['author']['orderWeight'] = 3;
+  variable_set('mkdru_defaults', $settings);
+}
+
+/**
+* Implements hook_uninstall().
+*/
+function mkdru_uninstall() {
+  // Delete variables
+  variable_del('pz2_js_path');
+  variable_del('mkdru_defaults');
+  variable_del('upload_mkdru');
+  variable_del('comment_mkdru');
+  variable_del('node_options_mkdru');
+}
+

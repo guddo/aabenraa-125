@@ -1,0 +1,171 @@
+<?php
+
+/**
+ * @file
+ * Test file for Snapengage module.
+ */
+
+/**
+ * Test basic functionality of Snapengage module.
+ */
+class SnapengageBasicTest extends DrupalWebTestCase {
+
+  /**
+   * Implements getInfo().
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('Snapengage basic tests'),
+      'description' => t('Test basic functionality of Snapengage module.'),
+      'group' => 'SnapEngage',
+    );
+  }
+
+  /**
+   * Implements DrupalWebTestCase::setup().
+   */
+  function setUp() {
+    parent::setUp('snapengage');
+
+    $permissions = array(
+      'access administration pages',
+      'administer snapengage',
+    );
+
+    // User to set up snapengage.
+    $this->admin_user = $this->drupalCreateUser($permissions);
+    $this->drupalLogin($this->admin_user);
+  }
+
+  /**
+   * Check presence of the settings page.
+   */
+  function testSnapengageConfiguration() {
+    // Check for setting page's presence.
+    $this->drupalGet('admin/config/system/snapengage');
+    $this->assertRaw(t('Widget ID'), '[testSnapengageConfiguration]: Settings page displayed.');
+  }
+
+  /**
+   * Check that the SnapEngage widget code is visible.
+   */
+  function testSnapengagePageVisibility() {
+    $widget_id = 'abcdefgh-1234-ijkl-5678-mnopqrstuvwx';
+    variable_set('snapengage_widget_id', $widget_id);
+
+    // Show widget on "every page except the listed pages".
+    variable_set('snapengage_visibility', 0);
+    // Disable widget one "admin*" pages only.
+    variable_set('snapengage_pages', "admin\nadmin/*");
+    // Enable widget only for authenticated users only.
+    variable_set('snapengage_roles', array(DRUPAL_AUTHENTICATED_RID => DRUPAL_AUTHENTICATED_RID));
+
+    // Check widget code visibility.
+    $this->drupalGet('');
+    $this->assertRaw($widget_id, '[testSnapengagePageVisibility]: Widget code is displayed for authenticated users.');
+
+    // Test whether widget code is not included on pages to omit.
+    $this->drupalGet('admin');
+    $this->assertNoRaw($widget_id, '[testSnapengagePageVisibility]: Widget code is not displayed on admin page.');
+    $this->drupalGet('admin/config/system/snapengage');
+    // Checking for widget code URI here, as $widget_id is displayed in the
+    // form.
+    $this->assertNoRaw('snapabug.appspot.com/snapabug.js', '[testSnapengagePageVisibility]: Widget code is not displayed on admin subpage.');
+
+    // Test whether widget code display is properly flipped.
+    variable_set('snapengage_visibility', 1);
+    $this->drupalGet('admin');
+    $this->assertRaw($widget_id, '[testSnapengagePageVisibility]: Widget code is displayed on admin page.');
+    $this->drupalGet('admin/config/system/snapengage');
+    // Checking for widget code URI here, as $widget_id is displayed in the
+    // form.
+    $this->assertRaw('snapabug.appspot.com/snapabug.js', '[testSnapengagePageVisibility]: Widget code is displayed on admin subpage.');
+    $this->drupalGet('');
+    $this->assertNoRaw($widget_id, '[testSnapengagePageVisibility]: Widget code is NOT displayed on front page.');
+
+    // Test whether widget code is not display for anonymous.
+    $this->drupalLogout();
+    $this->drupalGet('');
+    $this->assertNoRaw($widget_id, '[testSnapengagePageVisibility]: Widget code is NOT displayed for anonymous.');
+  }
+
+  /**
+   * Check whether it is possible to inject code via the widget ID.
+   */
+  function testSnapengageXssTest() {
+    $widget_id = "abcdefgh-1234-ijkl-5678-mnopqrstuvwx');alert('XSS');//";
+    variable_set('snapengage_widget_id', $widget_id);
+
+    // Check widget code visibility.
+    $this->drupalGet('');
+    $this->assertNoRaw("alert('XSS')", '[testSnapengageXss]: Widget ID is XSS protected.');
+  }
+}
+
+/**
+ * Test roles functionality of SnapEngage module.
+ */
+class SnapengageRolesTest extends DrupalWebTestCase {
+
+  /**
+   * Implements getInfo().
+   */
+  public static function getInfo() {
+    return array(
+      'name' => t('SnapEngage role tests'),
+      'description' => t('Test roles functionality of SnapEngage module.'),
+      'group' => 'SnapEngage',
+    );
+  }
+
+  /**
+   * Implements DrupalWebTestCase::setup().
+   */
+  function setUp() {
+    parent::setUp('snapengage');
+
+    $permissions = array(
+      'access administration pages',
+      'administer snapengage',
+    );
+
+    // User to set up snapengage.
+    $this->admin_user = $this->drupalCreateUser($permissions);
+  }
+
+  /**
+   * Test how the widget is displayed for different roles.
+   */
+  function testSnapengageRolesWidget() {
+    $widget_id = 'abcdefgh-1234-ijkl-5678-mnopqrstuvwx';
+    variable_set('snapengage_widget_id', $widget_id);
+
+    // Test if the default settings are working as expected.
+    // Enable widget for all users.
+    variable_set('snapengage_roles', array());
+
+    // Check widget code visibility.
+    $this->drupalGet('');
+    $this->assertRaw($widget_id, '[testSnapengageRoleVisibility]: Widget code is displayed for anonymous users on frontpage with default settings.');
+    $this->drupalGet('admin');
+    $this->assertRaw($widget_id, '[testSnapengageRoleVisibility]: Widget code is displayed for anonymous users in admin section with default settings.');
+
+    $this->drupalLogin($this->admin_user);
+
+    $this->drupalGet('');
+    $this->assertRaw($widget_id, '[testSnapengageRoleVisibility]: Widget code is displayed for authenticated users on frontpage with default settings.');
+    $this->drupalGet('admin');
+    $this->assertRaw($widget_id, '[testSnapengageRoleVisibility]: Widget code is displayed for authenticated users in admin section with default settings.');
+
+    // Test if the non-default settings are working as expected.
+    // Enable widget only for authenticated users.
+    variable_set('snapengage_roles', array(DRUPAL_AUTHENTICATED_RID => DRUPAL_AUTHENTICATED_RID));
+
+    $this->drupalGet('');
+    $this->assertRaw($widget_id, '[testSnapengageRoleVisibility]: Widget code is displayed for authenticated users on frontpage.');
+
+    $this->drupalLogout();
+    $this->drupalGet('');
+    $this->assertNoRaw($widget_id, '[testSnapengageRoleVisibility]: Widget code is NOT displayed for anonymous users on frontpage.');
+  }
+}

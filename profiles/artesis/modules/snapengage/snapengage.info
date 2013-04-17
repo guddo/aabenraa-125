@@ -1,0 +1,5 @@
+name = "SnapEngage"
+description = Adds a SnapEngage widget to your site's pages.
+core = 7.x
+configure = admin/config/system/snapengage
+files[] = snapengage.test

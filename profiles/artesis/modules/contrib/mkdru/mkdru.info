@@ -1,0 +1,5 @@
+name = Pazpar2 metasearch integration
+description = Metasearching of Z39.50, SRU and SOLR targets via Index Data's Pazpar2 and associated tool stack.
+core = 7.x
+dependencies[] = block
+configure = admin/config/search/mkdru

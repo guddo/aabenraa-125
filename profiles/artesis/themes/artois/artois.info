@@ -1,0 +1,24 @@
+name = Artois
+description = Theme for the Artesis Web project
+core = 7.x
+base theme = stark
+version = 7.x-0.37
+
+stylesheets[all][] = css/base.css
+stylesheets[all][] = css/colors.css
+stylesheets[all][] = css/mkdru.css
+stylesheets[print][] = css/print.css
+
+stylesheets-conditional[gte IE 9][all][] = css/ie_fix.css
+stylesheets-conditional[lt IE 9][all][] = css/ie8_fix.css
+stylesheets-conditional[lt IE 8][all][] = css/ie7_fix.css
+stylesheets-conditional[!IE 7][all][] = css/notie7.css
+
+scripts[] = js/waypoints.min.js
+scripts[] = js/base.js
+scripts[] = js/jquery.placeholder.js
+
+regions[header] = Header
+regions[subheader] = Search and login box area
+regions[content] = Main content area
+regions[footer] = Footer

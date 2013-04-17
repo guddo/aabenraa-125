@@ -1,0 +1,54 @@
+a.cross {
+  text-decoration: line-through;
+}
+
+.node-mkdru div {
+  margin: 1em 0em;
+}
+
+.mkdru-search {
+  text-align: center;
+}
+
+.mkdru-search input[type='text'] {
+  width: 80%;
+}
+
+.mkdru-results {
+  display: none;
+}
+
+.mkdru-result-list {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.mkdru-result-list li {
+  list-style-type: none;
+  list-style-image: none;
+  background: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mkdru-above-below {
+  float: clear;
+  border-style: solid none;
+  border-width: 1px;
+}
+
+.mkdru-status {
+  float: right;
+}
+
+.mkdru-result a {
+  font-weight: bold;
+}
+
+.mkdru-detail {
+  display: none;
+}
+
+.mkdru-detail tr.even, tr.odd, tbody th {
+  border-style: none !important;
+}

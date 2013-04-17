@@ -1,0 +1,9 @@
+panels_breadcrumbs 7.x-1.2
+==================
+Issue #1325772 by andypost: Fixed notices when breadcrumbs disabled.
+Issue #1324798 by devuo: Empty Breadcrumb in trail.
+Issue #1320748 by bennetteson, nod_: Patch to add a alter capacity to panels breadcrumbs.
+
+panels_breadcrumbs 7.x-1.1
+==================
+Issue #1304278 by andypost: Fixed Call-time pass-by-reference in panels_breadcrumbs.module.

@@ -1,0 +1,49 @@
+<?php
+
+/**
+ * @file
+ * Shows issue information on periodicals.
+ */
+
+// Load Field module hooks.
+module_load_include('inc', 'ding_periodical', 'ding_periodical.field');
+
+/**
+ * Implements hook_theme().
+ */
+function ding_periodical_theme() {
+  return array(
+    'ding_periodical_issues' => array(
+      // 'variables' => array('entity', 'issues'),
+      'render element' => 'elements',
+    ),
+  );
+}
+
+/**
+ * Theming function.
+ */
+function theme_ding_periodical_issues($variables) {
+  $items = array();
+  foreach ($variables['elements']['#issues'] as $volume => $issues) {
+    $iss = array();
+      foreach ($issues as $key => $availability) {
+      $issue = $key;
+      // check user
+      if ($availability['reservable'] && module_exists('ding_periodical_reservation')) {
+	  $issue .= ' ' . ding_periodical_reservation_button($availability['local_id'], $volume, $key, $variables['elements']['#entity']);
+	}
+      $iss[] = $issue;
+      }  
+
+      $vol = 
+	array(
+	      'data' => '<div class="'.drupal_html_class('ding_periodical_fold').'">'.$volume.'</div>',
+	      'children' => $iss,
+	      'class' => array(drupal_html_class('ding_periodical_foldable'),),
+	      );
+      $items[] = $vol;
+  }
+
+  return theme('item_list', array('items' => $items,'attributes'=>array('class'=>drupal_html_class('ding_periodical_issues'))));
+}

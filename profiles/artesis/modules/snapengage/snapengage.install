@@ -1,0 +1,61 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the snapengage module.
+ */
+
+/**
+ * Implements hook_enable().
+ */
+function snapengage_enable() {
+  variable_set('snapengage_supported_languages', array(
+      'da',
+      'cs',
+      'de',
+      'en',
+      'et',
+      'es',
+      'fr',
+      'fr_CA',
+      'is',
+      'it',
+      'hu',
+      'lv',
+      'lt',
+      'nl',
+      'nb',
+      'nn',
+      'pl',
+      'pt',
+      'ru',
+      'ro',
+      'sk',
+      'fi',
+      'sv',
+      'tr',
+      'iw',
+      'ja',
+      'ko',
+      'zh',
+      'zh_TW',
+      'ar',
+    ));
+}
+
+/**
+ * Implements hook_disable().
+ */
+function snapengage_disable() {
+  variable_del('snapengage_supported_languages');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function snapengage_uninstall() {
+  variable_del('snapengage_widget_id');
+  variable_del('snapengage_roles');
+  variable_del('snapengage_visibility');
+  variable_del('snapengage_pages');
+}

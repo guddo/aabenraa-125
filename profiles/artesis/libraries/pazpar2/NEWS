@@ -1,0 +1,568 @@
+Setting pz:xslt may embed local XSLT as an alternative to referring
+to filenames.
+Value is not CDATA but XML nodes embedded, so escaping is not necessary
+but a root element *must* be present. For example:
+<settings target="target="z3950.indexdata.com/marc">
+     <set name="pz:xslt">
+       <xsl:stylesheet
+          version="1.0"
+        ..
+       </xsl:stylesheet>
+     </set>
+    </settings>
+
+Metadata field rank may given by XML internal document (pz:xslt
+result). If rank is not given, the rank from service description is
+used - as before.
+
+New setting, pz:present_chunk, that specifies number of records to fetch
+at a time.
+
+--- 1.6.12 2012/03/14
+
+Revert the format change in termlist response, that could break 
+some clients / UIs since they were expecting an (empty) element 
+if no facet values was found. 
+
+--- 1.6.11 2012/03/07
+
+Revert the behavior of returning errors when unable to block 
+on termlist, bytarget and search, when unable to block due to 
+other block. The client will now receive a regular response, 
+but it will be logged in the server. A parameter (report) is
+added to change behavior to return error response or WARNING 
+status message. Consider this "API" as private, as it is mostly 
+untested and could be changed in future releases. 
+
+Fix spell error in pz2.js fix in 1.6.10.
+
+New Marc2TurboMarc.xsl (contribution from Sven Porst). 
+Can solve the missing marc21.xsl updates in some cases. 
+
+tmarc.xsl: Simplify the 6xx to subject-long and fix 1-based 
+substring (contribtion from Sven Porst)
+
+marc21.xsl: fix 1-based substring call
+
+tmarc.xsl and marc21.xsl: use 856$a as last option for electronic-text. 
+
+Add test_termlist_block to test suite
+
+--- 1.6.10 2012/02/23
+
+Fix SEGV for invalid PQFs and SRU/SOLR targets
+Also refactor a bit the code that converts from PQF to SRU/SOLR queries.
+
+Fix pz2.js: "null object" due to change in in bytarget result XML.
+
+Fixes in tmarc.xsl: Subject-long shorten for extra commas only. 
+Added this normalization to the other subject-long fields (d6xx), 
+where it was missing.
+
+Fixes in marc21.xsl: Updated with most of the new tmarc.xsl. 
+Still differences around medium and holdings. marc21.xsl is not 
+longer active used by Index Data, and should be considered unsupported.
+Use tmarc.xsl instead. 
+
+--- 1.6.9 2012/01/19
+
+Fix SEGV that could occur for failed connections.
+
+--- 1.6.8 2012/01/17
+
+Fix bug for command sort that could return no results for active clients
+(from previous search). This bug was present in 1.6.6-1.6.7.
+
+Fix bug in results that could include results that should have been
+filtered out. This bug was present in 1.6.6-1.6.7.
+
+--- 1.6.7 2011/12/23
+
+Fix bug introduced in 1.6.6 where a connection re-use could stall
+incoming requests.
+
+Local filtering may now specify a local metadata field, eg.
+ pz:limitmap:somefield[t]=local:otherfield
+
+--- 1.6.6 2011/11/25
+
+For search, when limit and or filtering is in place and search
+is identical to previous search, the result set is re-used and the
+target is not searched.
+
+Limits may work perform local filtering as well, by using "local:"
+for a limitmap.
+
+--- 1.6.5 2011/11/01
+
+Updated bytarget command to contain a suggestions element with misspelled
+words and suggestions to these. pz2.js has been updated to deliver this 
+onwards as well. Only target that currently delivers this is the solr 
+client in YAZ 4.2.18. 
+
+--- 1.6.4 2011/10/28
+
+New service definition element, xslt, that allows an embedded stylesheet
+to be defined. This can be referred to from pz:xslt as an alternative to
+external files.
+
+New pz:sortmap:field setting for specifying hints on how to make
+a target natively sort on a field. This is used for command=show in
+conjunction with sort.
+
+New pz:url setting for specifying the actual URL for a target. When
+this is used the target ID is not used as URL anymore and the target ID
+may be almost any string (not including []).
+
+command=termlist without name parameter returns all termlists/facets.
+Previously if name parameter was omitted, only "subject" was returned.
+
+--- 1.6.3 2011/09/22
+
+Make termlist sorting stable. Terms with same frequency are now sorted by
+their display name. This makes a pretty display and improves our
+regression test because qsort is not a stable sort.
+
+New sort parameter value 'position'. The 'position' sorts merged records
+by their original position from the remote target. This is primarily useful
+for debugging and may be used for targets that already perform some kind
+of relevance ranking. Note that sort by default is decreasing; so to get
+records in their original order sort=position:1 must be used.
+
+--- 1.6.2 2011/09/15
+
+tmarc.xsl: yet another 773$g fix. Was broken in 1.6.1 as well.
+
+Facility to change working directory for pazpar2 daemon. Option -wdir
+sets working directory to dir. This facility is useful if core dumps
+must be saved. In this case, the current working directory must be
+writable by the running user, such as "nobody".
+
+--- 1.6.1 2011/09/14
+
+New configuration element <icu_chain> for <server>/<service> which
+allows a named ICU rule (chain) to be defined. The names relevance,
+sort, mergekey and facet are used for those operations. The definition
+  <icu_chain id="sort" locale="en"> ..  </icu_chain>
+is identical to
+  <sort> <icu_chain locale="en> ... </icu_chain> </sort>
+And so on.. for relevance, mergekey and facet as well. The latter
+style is deprecated. The facet terms are normalized by the facet
+rule by default. This may be changed on a metadata field basis by
+defining the new attribute 'facetrule' for the metadata element.
+For example:
+  <icu_chain id="myrule" locale="en"> ... </icu_chain>
+  <metadata name="author" termlist="yes" facetrule="myrule"/>
+
+Preserve rorder for merged metadata. Fixes issue as reported by Sven
+Porst: http://lists.indexdata.dk/pipermail/yazlist/2011-July/003230.html
+
+tmarc.xsl: set journal-subpart to 773$ only.
+
+--- 1.6.0 2011/09/12
+
+Modify the behavior for the limit parameter (first defined in 1.5.7).
+Mapping of limit searches are now defined by the new configuration item
+pz:limitmap. Fix a dead-lock problem with the limit parameter.
+
+Extend tmarc.xsl to extract 773$g data (OpenURL).
+
+--- 1.5.7 2011/08/19
+
+ICU default maps remove backquote (`).
+
+Command 'search' takes limit parameter (optional).  The limit parameter
+allows a search to be limited one or more facets and the corresponding
+values. This is for server side filtering.
+
+Configure tweak: Use -lm for log(3) if needed
+
+--- 1.5.6 2011/04/15
+
+Fix a problem with skiparticle sortkey that could be completely
+ignored (and reduced to "").
+
+Fix dependency problem in pazpar2 RPM package (did not require
+libyaz4 as it should).
+
+--- 1.5.5 2011/03/28
+
+Fix memory leak that occurred for command=termlist&name=xtargets .
+
+Pazpar2 may save HTTP requests. Enabled by option -R.
+
+--- 1.5.4 2011/03/08
+
+Experimental support for DTIC DADS target. New dads-pz2.xsl.
+
+Support for query_syntax (overrides the default for SRU | Z39.50) 
+
+Support for extraArgs (ZOOM "extraArgs" option) for targets
+
+New commands: status-server and status-session
+
+--- 1.5.3 2011/02/18
+
+Fix for threaded runs: Client now have a copy of the database URL, 
+which can used after the database has been release from the client. 
+This makes the logging in the connection idle timeout of the client nicer (no NOURL) and should be thread-safe.  
+
+tmarc.xsl: Add journal-title-abbrev and full text. 
+
+cf.xsl: new fields: isbn, issn, journaltitle, volume, issue
+
+Fix for cmd=record before search.
+
+Session Logging clean up.
+
+Fix wrong termlist factor when maxrecs is different from 100.
+
+--- 1.5.2 2011/01/18
+
+Fix missing pz:termlist_term_factor in settings.c messed up pz:preferred.
+Term factor is default enabled but can be diseabled by
+pz:termlist_term_factor=0
+
+--- 1.5.1 2011/01/06
+
+Add scaling of facet count. Currently always enabled, needs fixing.
+Allow user-defined info for target suffix. This has no meaning in
+Pazpar2 except to distinguish targets from each other. The suffix
+data begins with #. For example z3950.indexdata.com/gils#Mydata
+
+Added exact-match recordfilter; format name=value
+
+--- 1.5.0 2010/10/05
+
+SOLR support. Pazpar2 may operate as web service client for SOLR.
+
+--- 1.4.4 2010/08/17
+
+Fix for show command and block=1 (dead lock). Bug was introduced in
+1.4.0.
+
+--- 1.4.3 2010/07/02
+
+New RPM packages: pazpar2, pazpar2-js, pazpar2-doc. These have been
+tested on CentOS 5.5 only.
+
+--- 1.4.2 2010/06/18
+
+Fix problem with result sets being removed from a client session
+if the connection for it was resused by another session. Bug #3489.
+
+New iphone UI for Pazpar2 (www/iphone).
+
+--- 1.4.1 2010/05/21
+
+Fixes for threaded operation.
+
+New stylesheets for TurboMARC: tmarc.xsl and opac_turbomarc.xsl.
+
+New example services in etc/services in source. In the Debian packages
+these are located in /etc/pazpar2/services-available
+
+Threaded mode operational on Windows. Requires Windows 7 or Windows
+Server 2008.
+
+Default value of setting pz:max_connections is 0 which means that there
+is no limit on number of connections.
+
+--- 1.4.0 2010/03/29
+
+Pazpar2 may operate in threaded mode. Enabled by element threads in
+the configuration. See pazpar2_conf for details.
+
+New setting setting: pz:max_connections. Setting pz:max_connections is
+a limit of number of sockets to a host. When this limit is reached,
+Pazpar2 will wait up to 5 seconds for a connection to becomes available.
+The client will be marked Client_Error when it can not be searched
+(other clients in a session may work). If pz:max_connections is not set
+for a target, a value of 30 will be used. Note: the pz:max_connections
+will only work in threaded mode.
+
+pz2.js: JSON support for show.
+
+Debian package: Enable default service, default.xml, before starting
+Pazpar2 only if there is no service already in /etc/pazpar2/services-enabled.
+
+--- 1.3.0 2010/01/25
+
+Debian version depends on on libyaz4. Note that Pazpar2 will still
+compile from source with YAZ 3.
+
+Split services into separate files. The example configuration file
+pazpar2.cfg.dist now includes a default service default.xml (part of
+etc). And default.xml includes settings/edu.xml. The default.xml file,
+not to be confused with settings/defaults.xml, is a template for jsdemo
+and other services. The Debian package installs /etc/pazpar2/server.xml
+which is now the main pazpar2 configuration (used to be called pazpar2.cfg).
+server.xml includes services from /etc/pazpar2/services-enabled/*.xml .
+The default.xml (from etc) is installed in /etc/pazpar2/services-available
+and a symlink to it is created from services-enabled. The default.xml
+service is unnamed and, thus, will be used by jsdemo and test1.
+
+New setting pz:negotiation_charset. Patch from Andrei V. Toutoukine. The
+new setting pz:negotiation_charset specifies character set for Z39.50 Init.  
+
+--- 1.2.4 2010/01/15
+
+Support for additional fields in cf.xsl and pazpar2.conf.dist:
+publisher, available, due, location (=locallocation), callno
+(=callnumber), thumburl and score.
+
+Describe pz:xslt and the auto setting.
+
+Move mergekey definition away from the normalization stylesheets and
+define a mergekey common for all target types in pazpar2.cfg.
+
+Code update: Use the Odr_int type for hit counts. This is part of
+YAZ 3.0.47 and later and so configure checks for that.
+
+--- 1.2.3 2009/11/24
+
+Metadata attribute 'skiparticle' also works for ICU based
+normalization. (was only working for the non-ICU/ASCII before).
+
+Command bytarget with argument settings=1 will show settings per
+target.. This is to be able to verify correct settings and be able to
+test that they are correct. The database settings array size is now
+also stored..  Problems with database settings array is that if not
+careful it will be too small (smaller than dictionary per-service
+in settings).
+
+Make record list sorting stable by comparing mergekey for records if
+relevance/title or other sorting criteria all match. This is merely to
+ensure that our regressions tests works (reproducible output).
+
+Relevance calculation changes: use a different denominator (length) for
+per-field relevance scoring.. Instead of length of all ranked fields we
+now use length of individual fields (as if they were individual "free"
+text fields). This will ensure that documents with a long field with no
+match (say description) will not "hurt" a title match.
+
+Diagnostic member was not set on connection error. Fixed
+
+--- 1.2.2 2009/10/13
+
+Command search takes two optional parameters, startecs and maxrecs,
+that specifies the start offset (0, 1, ...) and maximum number of records
+to fetch for each target.
+
+XSLTs + MARC maps are cached within a session so we don't re-parse
+them over and over again. Even for a session with a single search
+there's much to be gained because many targets use the same
+transformation.
+
+The metadata attribute 'mergekey' now takes one of three values 'no',
+'required', 'optional' .  And the resulting mergekey from metadata
+is now ordered in the same way as metadata in the service definition.
+Older Pazpar2 version use the order in which metadata appeared in a
+record instance.
+
+The search argument 'filter' now offers a new operator ~ which does a 
+substring match. The = operator works as before: string match for
+anything but pz:id, or target match for pz:id.
+
+New setting pz:recordfilter. The value of this setting takes the
+form name[~value]. This setting makes Pazpar2 ignore all retrieved
+records that do not have the metadata element name with value substring
+(if given).
+
+Pazpar2 allows YAZ log level to be set (option -v).
+
+--- 1.2.1 2009/10/05
+
+For WS responses Pazpar2 creates XML header. Exception: raw record.
+
+Setting XML files are now stored in etc/settings instead of etc. This
+reflects the layout with the Debian package layout.
+
+Settings may be posted for command=settings. The POSTed settings must
+have root element 'settings' like regular setting files. In order to be
+recognized, the POST request must use Content-Type=text/xml.
+
+A service may be posted for command=init. This service will be used
+during the session. The service may have its own target settings,
+ICU config, timeout, etc. In order to be recognized, the POST request
+must use Content-Type=text/xml.
+
+Timeout values may be given per-service. That's element 'timeout' 
+which takes three attribute values (a subset may be given): 'session',
+'z3950_operation', 'z3950_session'. Option -T is no longer supported
+- used to specify session timeout.
+
+Option -t tests the Pazpar2 configuration and returns exit code
+(0=success, non-zero=failure). In previous version of Pazpar2, -t
+specified local settings.
+
+In version 1.2.0 the configuration file - after include processing -
+was dumped to stdout. Now, the configuration is only dumped to the
+yaz log file if option -d is given.
+
+--- 1.2.0 2009/09/10
+
+Configuration may now have multiple server areas. This means that a
+Pazpar2 instance may listen on multiple ports. Virtual hosting is not
+yet supported - on a server basis. Configuration may also have multiple
+services .. That is repeating service elements inside a server. Each
+has an attribute 'id' which serves as service ID. This ID in turn may
+be used in a Pazpar2 session, by specifying parameter service=ID for
+command init. There can be at most one unnamed service inside a server
+which can be referred to by not specifying an service ID for command
+init (backwards compatible). In order to partition multiple servers and
+services a new include directive has been added. This takes an attribute
+'src' which specifies one or more sub-files. For example to include
+service files, one might use:
+  <server >.. <include src=/"etc/pazpar2/conf.d/*.xml"/> .. </server>.
+It is the intention that that completely makes the settings directive
+redundant.
+
+Fix problem where the record command would wait forever if there were
+no targets to wait for (activeclients == 0).
+
+--- 1.1.1 2009/08/28
+
+One result set is created per session (last search) rather than for
+each connection which happen to be shared (bug #3009).
+
+marc21 stylesheets changed for efficiency.
+
+--- 1.1.0 2009/08/19
+
+Session timeout may be specified on the command-line as option -T.
+
+Pazpar2 may now be operated in a no-merged mode for records.. All records
+will be considered unique. This mode is enabled if no mergekey is
+generated by the normalization stylesheet (pz:xslt). 
+
+Pazpar2 caches original records from each target and the 'record' command
+with offset returns the original record if 'syntax' and 'esn' are NOT
+specified. This speeds up retrieval of original records but also means
+that Pazpar2 uses more memory. The cached records will be freed when the
+session terminates or a new search is executed.
+
+Pazpar2 no longer uses its own ICU wrapper. Instead the ICU wrapper
+library part of YAZ is used.
+
+Added SRU client support.
+
+Automatically computes pz:nativesyntax if not provided. Works for XML and
+MARC.
+
+--- 1.0.13 2008/11/24
+
+Command bytarget returns name of target (if defined).
+
+--- 1.0.12 2008/11/04
+
+Fixed bug #2021.. location now holds all brief elements.
+
+--- 1.0.11 2008/10/15
+
+Fixed check for application/x-www-form-urlencoded parameters.
+
+--- 1.0.10 2008/10/14
+
+Fixes for IE in pz2.js.
+
+Fixed bug #2021: non-merged, brief meta data NOT included for command=show.
+
+--- 1.0.9 2008/05/23
+
+Changed the JS library pz2.js to use POST for long URL (+ params).
+
+Added installation instructions for Windows. Note: NT services is
+NOT available until we make a new release of YAZ.
+
+Preserve order of repeated metadata fields (they were reversed before).
+
+More MARC21 information extracted for metadata.
+
+--- 1.0.8 2008/04/22
+
+Fixed bug #1162: HTML entities are not escaped properly.
+
+Native Windows port of Pazpar2. Makefile for Visual Studio provided.
+
+--- 1.0.7 2008/04/14
+
+Marc21 stylesheet updated to reflect multiple full text fields
+
+--- 1.0.6 2008/03/12
+
+Fixed bug in pz2.js WRT DOMElement attributes on IE.
+
+Fixed bug 2100: Database wildcards not working
+
+--- 1.0.5 2007/11/09
+
+Added support for retrieval of records in binary.
+
+Fixed bug 1794: Pazpar2 does not return valid XML.
+
+Deal with ICU not returning sortkey (resulted in SEGV before).
+
+--- 1.0.4 2007/09/28
+
+JavaScript library pzw2.js throws error if WS response (from Pazpar2 or
+other) is malformed (non-wellformed XML or missing Pazpar2 OK status).
+
+Improved diagnostics when Pazpar2 HTTP decoding fails.
+
+Pazpar2 requests may be POSTed as using Content-Type
+application/x-www-form-urlencoded.
+
+Pazpar2 honors LF in HTTP headers.
+
+Handle targets that handle negative hit counts (should not happen, but it
+does).
+
+--- 1.0.3 2007/09/19
+
+ICU is used for tokenization and normalization of the following: mergekey,
+sorting, relevance terms.
+
+Debian package now enables ICU tokenization and normalization by default.
+
+--- 1.0.2 2007/08/22
+
+Exposed user setting values (i.e. non-pz: names) to the record systems in two
+ways: Either as parameters to the normalization stylesheets (which would allow the
+programmer to postprocess or use the values in any way) or after the normalization
+step, in which case values are made part of the normalized record (and available for
+sorting, termlists, display, or other interface-related use.
+
+Implemented sorting by year.
+
+Option -d dumps records to the current log file instead of stderr.
+
+Fixes for compilation on cygwin.
+
+Z39.50 client code uses pz:elements. pz:elements was recognized in
+earlier Pazpar2 versions but it was not used for anything.
+
+icu_chain_test is using fgets instead of getline - fixes compilation
+on MacOSX .
+
+Loosen the CCL query parsing so that Pazpar2 only returns error if _all_
+query conversions fail (rather than _any_). This means targets that do
+not support some fields are ignored in a search.
+
+--- 1.0.1 2007/07/03
+
+Improved handling of socket timeout for Z39.50 connections. 
+
+Misc documentation updates and spell fixes.
+
+Debian package pazpar2 creates log rotate entry.
+
+Debian package pazpar2-apache2 reloads Apache2.
+
+jsdemo included in distribution. It illustrates the use of the js/pz2.js
+JavaScript library.
+
+--- 1.0.0 2007/06/20
+
+First public release.
+

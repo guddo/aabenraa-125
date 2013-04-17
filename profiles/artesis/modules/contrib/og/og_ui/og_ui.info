@@ -1,0 +1,8 @@
+name = Organic groups UI
+description = "Organic groups UI."
+package = "Organic groups"
+dependencies[] = og
+core = 7.x
+version = VERSION
+files[] = og_ui.test
+configure = admin/config/group

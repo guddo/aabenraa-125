@@ -1,0 +1,24 @@
+
+.pending {
+  color: #696a69;
+}
+
+/* Not available or reservable */
+/* Note: This applies to online resources as well. However, it's possible to style these, based on material type */
+.availability.processed {
+  color: #ed1e88;
+}
+
+.availability.available {
+  color: #0072bc;
+}
+
+.availability.reservable {
+  color: #ea9123;
+}
+
+/* Available and reservable */
+.availability.available.reservable {
+  color: #4c9f45;
+}
+

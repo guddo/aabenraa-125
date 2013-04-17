@@ -1,0 +1,670 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE refentry PUBLIC "-//OASIS//DTD DocBook V4.4//EN"
+ "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd"
+[
+     <!ENTITY % local SYSTEM "local.ent">
+     %local;
+     <!ENTITY % entities SYSTEM "entities.ent">
+     %entities;
+     <!ENTITY % idcommon SYSTEM "common/common.ent">
+     %idcommon;
+]>
+<refentry id="pazpar2_protocol">
+ <refentryinfo>
+  <productname>Pazpar2</productname>
+  <productnumber>&version;</productnumber>
+  <info><orgname>Index Data</orgname></info>
+ </refentryinfo>
+ <refmeta>
+  <refentrytitle>Pazpar2 protocol</refentrytitle>
+  <manvolnum>7</manvolnum>
+  <refmiscinfo class="manual">Conventions and miscellaneous</refmiscinfo>
+ </refmeta>
+
+ <refnamediv>
+  <refname>pazpar2_protocol</refname>
+  <refpurpose>The webservice protocol of Pazpar2</refpurpose>
+ </refnamediv>
+
+ <refsect1>
+  <title>DESCRIPTION</title>
+  <para>
+   Webservice requests are any that refer to filename "search.pz2". Arguments
+   are GET-style parameters. Argument 'command' is always required and specifies
+   the operation to perform. Any request not recognized as a webservice
+   request is forwarded to the HTTP server specified in the configuration
+   using the proxy setting.
+   This way, a regular webserver can host the user interface (itself dynamic
+   or static HTML), and Ajax-style calls can be used from JS (or any other
+   client-based scripting environment) to interact with the search logic
+   in Pazpar2. 
+  </para>
+  <para>
+   Each command is described in sub sections to follow.
+  </para>
+  <refsect2 id="command-init">
+   <title>init</title>
+   <para>
+    Initializes a session.
+    Returns session ID to be used in subsequent requests. If
+    a server ID is given in the Pazpar2 server section, then a
+    period (.) and the server ID is appended to the session ID.
+   </para>
+   <para>
+    Example:
+    <screen>
+     search.pz2?command=init
+    </screen>
+   </para>
+   <para>
+    Response:
+   </para>
+   <screen><![CDATA[
+    <init>
+     <status>OK</status>
+     <session>2044502273</session>
+    </init>
+]]></screen>
+   <para>
+    The init command may take a number of setting parameters, similar to
+    the 'settings' command described below. These settings are immediately
+    applied to the new session. Other parameters for init are:
+    <variablelist>
+     <varlistentry>
+      <term>clear</term>
+      <listitem>
+       <para>
+	If this is defined and the value is non-zero, the session will
+	not use the predefined databases in the configuration; only those
+	specified in the settings parameters (per session databases).
+	</para>
+      </listitem>
+     </varlistentry>
+
+     <varlistentry>
+      <term>service</term>
+      <listitem>
+       <para>
+        If this is defined it specifies a service ID. Makes the session use
+        the service with this ID. If this is setting is omitted, the
+        session will use the unnamed service in the Pazpar2 configuration.
+	</para>
+      </listitem>
+     </varlistentry>
+    </variablelist>
+   </para>
+  </refsect2>
+  
+  <refsect2 id="command-ping">
+   <title>ping</title>
+   <para>
+    Keeps a session alive. An idle session will time out after one minute.
+    The ping command can be used to keep the session alive absent other
+    activity.
+    It is suggested that any browser client have a simple alarm handler which
+    sends a ping every 50 seconds or so once a session has been initialized.
+   </para>
+   <para>
+    Example:
+    <screen><![CDATA[
+     search.pz?command=ping&session=2044502273
+]]>
+    </screen>
+    Response:
+   <screen><![CDATA[
+<ping>
+  <status>OK</status>
+</ping>
+]]></screen>
+   </para>
+  </refsect2>
+  <refsect2 id="command-settings">
+   <title>settings</title>
+   <para>
+    The settings command applies session-specific settings to one or more
+    databases. A typical function of this is to enable access to
+    restricted resources for registered users, or to set a user- or
+    library-specific username/password to use against a target. Each
+    setting parameter has the form name[target]=value, where name is the
+    name of the setting (e.g. pz:authentication), target is a target ID,
+    or possibly a wildcard, and value is the desired value for the
+    setting.
+   </para>
+   
+   <para>
+    Because the settings command manipulates potentially sensitive
+    information, it is possible to configure Pazpar2 to only allow access
+    to this command from a trusted site -- usually from server-side
+    scripting, which in turn is responsible for authenticating the user,
+    and possibly determining which resources he has access to, etc.
+   </para>
+   
+   <note>
+    <para>
+     As a shortcut, it is also possible to override settings directly in
+     the init command.
+    </para>
+   </note>
+   
+   <para>
+    Example:
+    <screen><![CDATA[
+search.pz?command=settings&session=2044502273&pz:allow[search.com:210/db1]=1
+      ]]></screen>
+    Response:
+   <screen><![CDATA[
+<settings>
+  <status>OK</status>
+</settings>
+]]></screen>
+   </para>
+   
+  </refsect2>
+  <refsect2 id="command-search">
+   <title>search</title>
+   <para>
+    Launches a search, parameters:
+
+    <variablelist>
+     <varlistentry>
+      <term>session</term>
+      <listitem>
+       <para>
+	Session ID
+	</para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>query</term>
+      <listitem>
+       <para>
+	CCL query
+	</para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>filter</term>
+      <listitem>
+       <para>
+	Limits the search to a given set of targets specified by the
+	filter. The filter consists a comma separated list of
+	<emphasis>setting</emphasis>+<emphasis>operator</emphasis>+<emphasis>args</emphasis>
+	pairs. The <emphasis>setting</emphasis> is a Pazpar2 setting
+	(such as <literal>pz:id</literal>).
+	The <emphasis>operator</emphasis> is either
+	<literal>=</literal> (string match)
+	or <literal>~</literal> (substring match).
+	The <emphasis>args</emphasis> is a list of values separated
+	by <literal>|</literal> (or , one of the values).
+	The idea is that only targets with a setting matching one of
+	the values given will be included in the search.
+       </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>limit</term>
+      <listitem>
+       <para>
+	Narrows the search by one or more fields (typically facets).
+	The limit is sequence of one or more
+	<emphasis>name</emphasis>=<emphasis>args</emphasis> pairs separated
+	by comma. The <emphasis>args</emphasis> is a list of values
+	separated by vertical bar (<literal>|</literal>).
+	The meaning of <literal>|</literal> is alternative, ie OR .
+	A value that contains a comma (<literal>,</literal>),
+	a vertical bar (<literal>|</literal>) or
+	backslash itself must be preceded by backslash (<literal>\</literal>).
+	The <link linkend="limitmap">pz:limitmap</link> configuration
+	item defines how the searches are mapped to a database.
+       </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>startrecs</term>
+      <listitem>
+       <para>
+	Specifies the first record to retrieve from each target.
+	The first record in a result set for a target is numbered 0, next
+	record is numbered 2. By default maxrecs is 0.
+	</para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>maxrecs</term>
+      <listitem>
+       <para>
+	Specifies the maximum number of records to retrieve from each
+	target. The default value is 100. This setting has same meaning
+	as per-target setting pz:maxrecs . If pz:maxrecs is set, it takes
+	precedence over argument maxrecs.
+	</para>
+      </listitem>
+     </varlistentry>
+    </variablelist>
+
+   </para>
+   <para>
+    Example:
+    <screen><![CDATA[
+search.pz2?session=2044502273&command=search&query=computer+science
+]]>
+     </screen>
+    Response:
+   <screen><![CDATA[
+<search>
+  <status>OK</status>
+</search>
+     ]]></screen>
+   </para>
+  </refsect2>
+ 
+  <refsect2 id="command-stat">
+   <title>stat</title>
+   <para>
+    Provides status information about an ongoing search. Parameters:
+
+    <variablelist>
+     <varlistentry>
+      <term>session</term>
+      <listitem>
+       <para>
+	Session ID
+	</para>
+      </listitem>
+     </varlistentry>
+    </variablelist>
+
+   </para>
+   <para>
+    Example:
+   <screen><![CDATA[
+search.pz2?session=2044502273&command=stat
+    ]]></screen>
+    Output
+    <screen><![CDATA[
+<stat>
+  <activeclients>3</activeclients>
+  <hits>7</hits>                   -- Total hitcount
+  <records>7</records>             -- Total number of records fetched in last query
+  <clients>1</clients>             -- Total number of associated clients
+  <unconnected>0</unconnected>     -- Number of disconnected clients
+  <connecting>0</connecting>       -- Number of clients in connecting state
+  <initializing>0</initializing>   -- Number of clients initializing
+  <searching>0</searching>         -- ... searching
+  <presenting>0</presenting>       -- ... presenting
+  <idle>1</idle>                   -- ... idle (not doing anything)
+  <failed>0</failed>               -- ... Connection failed
+  <error>0</error>                 -- ... Error was produced somewhere
+</stat>
+     ]]></screen>
+  </para>
+  </refsect2>
+  
+  <refsect2 id="command-show">
+   <title>show</title>
+   <para>
+    Shows records retrieved. Parameters:
+    <variablelist>
+     <varlistentry>
+      <term>session</term>
+      <listitem>
+       <para>
+	Session ID
+       </para>
+      </listitem>
+     </varlistentry>
+     
+     <varlistentry>
+      <term>start</term>
+      <listitem>
+       <para>First record to show - 0-indexed.</para>
+      </listitem>
+     </varlistentry>
+     
+     <varlistentry>
+      <term>num</term>
+      <listitem>
+       <para>
+	Number of records to show If omitted, 20 is used.
+       </para>
+      </listitem>
+     </varlistentry>
+
+     <varlistentry>
+      <term>block</term>
+      <listitem>
+       <para>
+	If block is set to 1, the command will hang until there are records
+	ready to display. Use this to show first records rapidly without
+	requiring rapid polling.
+       </para>
+      </listitem>
+     </varlistentry>
+
+     <varlistentry>
+      <term>sort</term>
+      <listitem>
+       <para>
+	Specifies sort criteria. The argument is a comma-separated list
+	(no whitespace allowed) of sort fields, with the highest-priority
+	field first. A sort field may be followed by a colon followed by
+	the number '0' or '1', indicating whether results should be sorted in
+	increasing or decreasing order according to that field. 0==Decreasing is
+	the default.
+	Sort field names can be any field name designated as a sort field
+        in the pazpar2.cfg file, or the special names 'relevance' and
+	'position'.
+       </para>
+       <para>
+	For targets where If <link linkend="pz:sortmap">pz:sortmap</link>
+	is defined, a sort operation will be executed (possibly including
+	extending the search).
+       </para>
+      </listitem>
+     </varlistentry>
+     
+    </variablelist>
+   </para>
+   <para>
+    Example:
+    <screen><![CDATA[
+search.pz2?session=2044502273&command=show&start=0&num=2&sort=title:1
+]]></screen>
+    Output:
+    <screen><![CDATA[
+<show>
+  <status>OK</status>
+  <activeclients>3</activeclients>     -- How many clients are still working
+  <merged>6</merged>                   -- Number of merged records
+  <total>7</total>                     -- Total of all hitcounts
+  <start>0</start>                     -- The start number you requested
+  <num>2</num>                         -- Number of records retrieved
+  <hit>
+    <md-title>How to program a computer, by Jack Collins</md-title>
+    <count>2</count>                   -- Number of merged records 
+    <recid>6</recid>                   -- Record ID for this record
+  </hit>
+  <hit>
+    <md-title>
+  Computer processing of dynamic images from an Anger scintillation camera :
+  the proceedings of a workshop /
+    </md-title>
+    <recid>2</recid>
+  </hit>
+</show>
+     ]]></screen>
+   </para>
+  </refsect2>
+
+  <refsect2 id="command-record">
+   <title>record</title>
+   <para>
+    Retrieves a detailed record. Unlike the 
+    <link linkend="command-show">show</link> command, this command 
+    returns metadata records before merging takes place. Parameters:
+    
+    <variablelist>
+     <varlistentry>
+      <term>session</term>
+      <listitem>
+       <para>
+	Session ID
+       </para>
+      </listitem>
+     </varlistentry>
+
+     <varlistentry>
+      <term>id</term>
+      <listitem>
+       <para>
+	record ID as provided by the
+	<link linkend="command-show">show</link> command.
+	</para>
+      </listitem>
+     </varlistentry>
+
+     <varlistentry>
+      <term>offset</term>
+      <listitem>
+       <para>
+	This optional parameter is an integer which, when given, makes
+	Pazpar2 return the original record for a specific target.
+	The record set from first target is numbered 0,
+	second record set is numbered 1, etc.
+	The nativesyntax setting, as usual, is used to determine how to
+	create XML from the original record - unless parameter
+	<literal>binary</literal> is given in which the record is
+	fetched as "raw" from ZOOM C (raw, original record).
+       </para>
+       <para>
+	When offset is not given, the Pazpar2 metadata for the record
+	is returned and with metadata for each targets' data specified
+	in a 'location' list.
+       </para>
+      </listitem>
+     </varlistentry>
+
+     <varlistentry>
+      <term>nativesyntax</term>
+      <listitem>
+       <para>
+	This optional parameter can be used to override	pz:nativesyntax
+	as given for the target. This allow an alternative nativesyntax
+	to be used for original records (see parameteroffset above).
+       </para>
+      </listitem>
+     </varlistentry>
+
+     <varlistentry>
+      <term>syntax</term>
+      <listitem>
+       <para>
+	This optional parameter is the record syntax used for raw 
+	transfer (i.e. when offset is specified). If syntax is not given,
+	but offset is used, the value of pz:requestsyntax is used.
+       </para>
+      </listitem>
+     </varlistentry>
+
+     <varlistentry>
+      <term>esn</term>
+      <listitem>
+       <para>
+	This optional parameter is the element set name used to retrieval
+	of a raw record (i.e. when offset is specified).
+	If esn is not given, but offset is used, the value of pz:elements
+	is used.
+       </para>
+      </listitem>
+     </varlistentry>
+
+     <varlistentry>
+      <term>binary</term>
+      <listitem>
+       <para>
+	This optional parameter enables "binary" response for retrieval
+	of a original record (i.e. when offset is specified). For binary
+	response the record by default is fetched from ZOOM C using
+	the "raw" option or by parameter nativesyntax if given.
+       </para>
+      </listitem>
+     </varlistentry>
+
+    </variablelist>
+   </para>
+   <para> 
+    Example:
+    <screen><![CDATA[
+search.pz2?session=605047297&command=record&id=3
+]]></screen>
+
+    Example output:
+    
+    <screen><![CDATA[
+<record>
+  <md-title>
+	The Puget Sound Region : a portfolio of thematic computer maps /
+  </md-title>
+  <md-date>1974</md-date>
+  <md-author>Mairs, John W.</md-author>
+  <md-subject>Cartography</md-subject>
+</record>
+]]></screen>
+   </para>
+  </refsect2>
+
+  <refsect2 id="command-termlist">
+   <title>termlist</title>
+   <para>
+    Retrieves term list(s). Parameters:
+    
+    <variablelist>
+     <varlistentry>
+      <term>session</term>
+      <listitem>
+       <para>
+	Session Id.
+       </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>name</term>
+      <listitem>
+       <para>
+	comma-separated list of termlist names. If omitted,
+	all termlists are returned.
+       </para>
+      </listitem>
+     </varlistentry>
+     <varlistentry>
+      <term>num</term>
+      <listitem>
+       <para>
+	maximum number of entries to return - default is 15.
+       </para>
+      </listitem>
+     </varlistentry>
+    </variablelist>
+   </para>
+   <para>
+    Example:
+    <screen><![CDATA[
+search.pz2?session=2044502273&command=termlist&name=author,subject
+]]></screen>
+    Output:
+    <screen><![CDATA[
+<termlist>
+  <activeclients>3</activeclients>
+  <list name="author">
+    <term>
+      <name>Donald Knuth</name>
+      <frequency>10</frequency>
+    </term>
+      <term>
+      <name>Robert Pirsig</name>
+      <frequency>2</frequency>
+    </term>
+  </list>
+  <list name="subject">
+    <term>
+      <name>Computer programming</name>
+      <frequency>10</frequency>
+    </term>
+  </list>
+</termlist>
+]]></screen>
+   </para>
+   
+   <para>
+    For the special termlist name "xtargets", results
+    are returned about the targets which have returned the most hits.
+    The 'term' subtree has additional elements,
+    specifically a state and diagnostic field (in the example below, a
+    target ID is returned in place of 'name'.
+    This may or may not change later.
+   </para>
+   <para>
+    Example
+    <screen><![CDATA[
+<term>
+  <name>library2.mcmaster.ca</name>
+  <frequency>11734</frequency>         -- Number of hits
+  <state>Client_Idle</state>           -- See the description of 'bytarget' below
+  <diagnostic>0</diagnostic>           -- Z39.50 diagnostic codes
+</term>
+]]></screen>
+   </para>
+  </refsect2>
+  
+
+  <refsect2 id="command-bytarget">
+   <title>bytarget</title>
+   <para>
+    Returns information about the status of each active client. Parameters:
+
+    <variablelist>
+     <varlistentry>
+      <term>session</term>
+      <listitem>
+       <para>
+	Session Id.
+	</para>
+      </listitem>
+     </varlistentry>
+    </variablelist>
+   </para>
+   <para> 
+    Example:
+    <screen><![CDATA[
+search.pz2?session=605047297&command=bytarget&id=3
+]]></screen>
+    
+    Example output:
+    
+    <screen><![CDATA[
+<bytarget>
+  <status>OK</status>
+  <target>
+    <id>z3950.loc.gov/voyager/</id>
+    <hits>10000</hits>
+    <diagnostic>0</diagnostic>
+    <records>65</records>
+    <state>Client_Presenting</state>
+  </target>
+  <!-- ... more target nodes below as necessary -->
+</bytarget>
+]]></screen>
+    
+    The following client states are defined: Client_Connecting,
+    Client_Connected, Client_Idle, Client_Initializing, Client_Searching,
+    Client_Searching, Client_Presenting, Client_Error, Client_Failed,
+    Client_Disconnected, Client_Stopped, Client_Continue.
+   </para>
+  </refsect2>
+
+ </refsect1>
+ <refsect1>
+  <title>SEE ALSO</title>
+  <para>
+   Pazpar2:
+   <citerefentry>
+    <refentrytitle>pazpar2</refentrytitle>
+    <manvolnum>8</manvolnum>
+   </citerefentry>
+  </para>
+  <para>
+   Pazpar2 Configuration:
+   <citerefentry>
+    <refentrytitle>pazpar2_conf</refentrytitle>
+    <manvolnum>5</manvolnum>
+   </citerefentry>
+  </para>
+ </refsect1>
+</refentry>
+
+<!-- Keep this comment at the end of the file
+Local variables:
+mode: nxml
+nxml-child-indent: 1
+End:
+-->

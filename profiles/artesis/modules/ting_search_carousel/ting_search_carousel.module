@@ -1,0 +1,229 @@
+<?php
+/**
+ * @file
+ * Ting search carousel module main file.
+ */
+
+/**
+ * Implements hook_menu().
+ */
+function ting_search_carousel_menu() {
+  $items = array();
+
+  $items['admin/config/ting/ting_search_carousel'] = array(
+    'title' => 'Ting search carousel',
+    'description' => 'Manage frontpage carousel',
+    'page callback' => 'ting_search_carousel_admin_page',
+    'page arguments' => array(),
+    'access arguments' => array('access administration pages'),
+    'file' => 'ting_search_carousel.admin.inc',
+    'weight' => 30,
+    'position' => 'left',
+  );
+
+  $items['ting_search_carousel/results/ajax'] = array(
+    'title' => 'Show search carousel results',
+    'page callback' => 'ting_search_carousel_result',
+    'access arguments' => array('access content'),
+    'file' => 'ting_search_carousel.pages.inc',
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function ting_search_carousel_block_info() {
+  $blocks = array();
+
+  $blocks['ting_search_carousel'] = array(
+    'info' => 'Ting search carousel'
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function ting_search_carousel_block_view($delta) {
+  $block = array();
+
+  switch ($delta) {
+    case 'ting_search_carousel':
+      $searches = variable_get('ting_carousel_search_queries', array());
+      $block['content'] = theme('ting_search_carousel', array('searches' => $searches));
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function ting_search_carousel_theme($existing, $type, $theme, $path) {
+  $hooks = array();
+  $hooks['ting_search_carousel'] = array(
+    'variables' => array('searches' => NULL),
+    'template' => 'ting_search_carousel'
+  );
+
+  $hooks['ting_search_carousel_collection'] = array(
+    'variables' => array('collection' => NULL),
+    'template' => 'ting_search_carousel_collection'
+  );
+
+  $hooks['ting_search_carousel_admin_form'] = array(
+    'render element' => 'form',
+  );
+
+  return $hooks;
+}
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function ting_search_carousel_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'ctools' || $module == 'panels') {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function ting_search_carousel_cron() {
+  ting_search_carousel_do_request(TRUE);
+}
+
+/**
+ * Perform a ting search, retrieve covers and store some of data in cache.
+ */
+function ting_search_carousel_do_request($full = FALSE) {
+  $search_queries = variable_get('ting_carousel_search_queries', array());
+  $search_items = array();
+
+  // There are any queries set.
+  if (count($search_queries) > 0) {
+    module_load_include('client.inc', 'ting');
+    module_load_include('pages.inc', 'ting_covers');
+
+    $service = new AdditionalInformationService(variable_get('addi_wsdl_url'), variable_get('addi_username'), variable_get('addi_group'), variable_get('addi_password'));
+    $j = 0;
+
+    // Search for each query up to 100 items.
+    foreach ($search_queries as $item) {
+      $result = '';
+
+      // Whether we need to fetch all items, perform indepth search.
+      // Seek first 100 collections otherwise.
+      if ($full) {
+        $page = 1;
+        $collections = array();
+        // Make recursive ting calls
+        while ($result = ting_do_search($item['query'], $page++, 50, array('facets' => array(), 'enrich' => TRUE, 'allObjects' => FALSE))) {
+          if ($result->numTotalCollections == 0) {
+            break;
+          }
+
+          $collections[] = $result;
+        }
+
+        // Rearrange fetched results, as if they were retrieved via single call
+        $result = new stdClass();
+        $result->collections = array();
+        foreach ($collections as $collection) {
+          foreach ($collection->collections as $item) {
+            $result->collections[] = $item;
+          }
+        }
+      }
+      else {
+        $result = ting_do_search($item['query'], 1, 100, array('facets' => array(), 'enrich' => TRUE, 'allObjects' => FALSE));
+      }
+
+      // For each found collection, find a related item with cover.
+      foreach ($result->collections as $collection) {
+        foreach ($collection->reply->objects as $object) {
+          $path = 'public://ting_search_carousel/' . md5($object->localId) . '.jpg';
+
+          $ting_item_cover = '';
+          $file = '';
+
+          // If image is not present, try fetch it
+          if (!file_exists($path)) {
+            $ting_item_cover = $service->getByFaustNumber($object->localId);
+
+            // No cover found, go to next item in collection
+            if (count($ting_item_cover) == 0) {
+              break;
+            }
+
+            $k = array_keys($ting_item_cover);
+            $source_url = '';
+
+            if ($ting_item_cover[$k[0]]->thumbnailUrl) {
+              $source_url = $ting_item_cover[$k[0]]->thumbnailUrl;
+            }
+            elseif ($ting_item_cover[$k[0]]->detailUrl) {
+              $source_url = $ting_item_cover[$k[0]]->detailUrl;
+            }
+
+            // Saves and returns new image file object
+            $file = _ting_covers_pages_fetch_image('public://ting_search_carousel/' . md5($object->localId) . '.jpg', $source_url);
+          }
+
+          $item = new stdClass();
+          $item->id = $object->id;
+          $item->creator = isset($object->record['dc:creator']['oss:aut'][0]) ? $object->record['dc:creator']['oss:aut'][0] : '';
+          $item->title = isset($object->record['dc:title'][''][0]) ? $object->record['dc:title'][''][0] : '';
+          $item->image = image_style_url('ting_search_carousel', isset($file->uri) ? $file->uri : $path);
+
+          $search_items[$j][] = $item;
+          break;
+        }
+      }
+
+      $j++;
+    }
+  }
+
+  // Clear & set the cache.
+  cache_clear_all('ting_search_result', 'cache');
+  cache_set('ting_search_result', serialize($search_items), 'cache');
+}
+
+/**
+ * Implements hook_image_default_styles().
+ */
+function ting_search_carousel_image_default_styles() {
+  $styles = array();
+
+  $styles['ting_search_carousel'] = array(
+    'name' => 'ting_search_carousel',
+    'effects' => array(
+      0 => array(
+        'label' => 'Scale',
+        'help' => 'Scaling will maintain the aspect-ratio of the original image. If only a single dimension is specified, the other dimension will be calculated.',
+        'effect callback' => 'image_scale_effect',
+        'dimensions callback' => 'image_scale_dimensions',
+        'form callback' => 'image_scale_form',
+        'summary theme' => 'image_scale_summary',
+        'module' => 'image',
+        'name' => 'image_scale',
+        'data' => array(
+          'width' => '',
+          'height' => '140',
+          'upscale' => 0,
+        ),
+        'weight' => '1',
+      ),
+    ),
+  );
+
+  return $styles;
+}
+

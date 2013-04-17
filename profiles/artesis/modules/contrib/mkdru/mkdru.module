@@ -1,0 +1,514 @@
+<?php
+
+
+
+// Module metainfo
+/**
+* Implements hook_node_info()
+*/
+function mkdru_node_info() {
+  return array(
+    'mkdru' => array(
+      'name'        => t("Pazpar2 metasearch interface"),
+      'base'        => 'mkdru',
+      'description' => t("Metasearch interface for Z39.50/SRU and other targets via a Pazpar2/Service Proxy backend"),
+    )
+  );
+}
+
+/**
+* Implements hook_permission()
+*/
+function mkdru_permission() {
+  return array(
+    'administer metasearch interfaces' => array(
+      'title' => t('Administer Pazpar2 metasearch integration'),
+    ),
+    'create metasearch interface' => array(
+      'title' => t('Create metasearch interface'),
+    ),
+    'edit any metasearch interface' => array(
+      'title' => t('Edit any metasearch interface'),
+    ),
+    'edit own metasearch interface' => array(
+      'title' => t('Edit own metasearch interface'),
+    ),
+  );
+}
+
+/**
+* Implements hook_node_access()
+*/
+function mkdru_node_access($node, $op, $account) {
+  $type = is_string($node) ? $node : $node->type;
+
+  if ($type == 'mkdru') {
+    if ($op == 'create') {
+      // Only users with permission to do so may create this node type.
+      return user_access('create metasearch interface', $account);
+    }
+
+    // Users who create a node may edit or delete it later, assuming they have the
+    // necessary permissions.
+    if ($op == 'update' || $op == 'delete') {
+      if (user_access('edit own metasearch interface', $account) && ($account->uid == $node->uid)) {
+        return NODE_ACCESS_ALLOW;
+      }
+      elseif (user_access('edit any metasearch interface', $account)) {
+        return NODE_ACCESS_ALLOW;
+      }
+    }
+  }
+
+  return NODE_ACCESS_IGNORE;
+}
+
+/**
+* Implements hook_menu()
+*/
+function mkdru_menu() {
+  $items['admin/config/search/mkdru'] = array(
+    'title' => 'Configure Pazpar2 metasearch integration',
+    'description' => 'Settings for mkdru.',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('mkdru_admin_settings'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+    'file' => 'mkdru.admin.inc',
+  );
+  return $items;
+}
+
+/**
+* Implementation of hook_init()
+*/
+function mkdru_init() {
+  // Applies our module specific CSS to all pages. This works best because
+  // all CSS is aggregated and cached so we reduce the number of HTTP 
+  // requests and the size is negligible.
+  drupal_add_css(drupal_get_path('module', 'mkdru') . '/mkdru.css');
+}
+
+
+
+// Config form common to node and settings
+function mkdru_settings_form($form, &$form_state) {
+  if (isset($form_state['values']['settings'])) {
+    $settings = $form_state['values']['settings'];
+  }
+  elseif (isset($form_state['build_info']['args']['settings'])) {
+    $settings = $form_state['build_info']['args']['settings'];
+  }
+  else {
+    $settings = variable_get('mkdru_defaults');
+  }
+
+  $form['settings'] = array(
+    '#tree' => TRUE,
+  );
+
+  $form['settings']['pz2_path'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Pazpar2/Service Proxy path'),
+    '#description' => t('Path that takes Pazpar2 commands via HTTP'),
+    '#required' => TRUE,
+    '#default_value' => $settings['pz2_path'],
+  );
+  $form['settings']['use_sessions'] = array(
+    '#title' => t('Session handling'),
+    '#description' => t('Disable for use with Service Proxy'),
+    '#type' => 'checkbox',
+    '#default_value' => $settings['use_sessions'],
+  );
+  $form['settings']['disable_ranking'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Disable sorting'),
+    '#description' => t('Disables sorting will use the targets own sorting algorithm.'),
+    '#default_value' => $settings['disable_ranking'],
+  );
+  $form['settings']['sp']  = array(
+    '#type' => 'fieldset',
+    '#title' => t('Service Proxy specific settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE
+  );
+  $form['settings']['sp']['user'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Service Proxy username'),
+    '#description' => t('Service Proxy username'),
+    '#required' => FALSE,
+    '#default_value' => $settings['sp']['user'],
+  );
+  $form['settings']['sp']['pass'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Service Proxy password'),
+    '#description' => t('Service Proxy password'),
+    '#required' => FALSE,
+    '#default_value' => $settings['sp']['pass'],
+  );
+
+  $form['settings']['facets']  = array(
+    '#type' => 'fieldset',
+    '#title' => t('Facet settings'),
+    // Set up the wrapper so that AJAX will be able to replace the fieldset.
+    '#prefix' => '<div id="mkdru-facets-form-wrapper">', 
+    '#suffix' => '</div>',
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE
+  );
+
+  foreach (array_keys($settings['facets']) as $facet) {
+    $form['settings']['facets'][$facet]  = array(
+      '#type' => 'fieldset',
+      '#title' => $facet . ' ' . t('facet'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE
+    );
+    $form['settings']['facets'][$facet]['displayName'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Facet name to display in UI'),
+      '#required' => TRUE,
+      '#default_value' => $settings['facets'][$facet]['displayName'],
+    );
+    $form['settings']['facets'][$facet]['pz2Name'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Name of termlist in Pazpar2'),
+      '#required' => TRUE,
+      '#default_value' => $settings['facets'][$facet]['pz2Name'],
+    );
+    $form['settings']['facets'][$facet]['limiter'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Query limiter string'),
+      '#default_value' => $settings['facets'][$facet]['limiter'],
+      '#size' => 5,
+    );
+    $form['settings']['facets'][$facet]['multiLimit'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Allow multiple limits?'),
+      '#default_value' => $settings['facets'][$facet]['multiLimit'],
+    );
+    $form['settings']['facets'][$facet]['max'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Number of terms to display'),
+      '#required' => TRUE,
+      '#default_value' => $settings['facets'][$facet]['max'],
+      '#size' => 3,
+      '#maxlength' => 3,
+    );
+    $form['settings']['facets'][$facet]['orderWeight'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Facet weight'),
+      '#default_value' => $settings['facets'][$facet]['orderWeight'],
+      '#size' => 3,
+      '#maxlength' => 3,
+    );
+    $form['settings']['facets'][$facet]['remove'] = array(
+      '#type' => 'submit',
+      '#value' => t('Remove') . ' ' . $facet . ' ' . t('facet'),
+      '#mkdru facet' => $facet,
+      '#submit' => array('mkdru_remove_facet'),
+      '#ajax' => array(
+        'callback' => 'mkdru_ajax_facet_callback',
+        'wrapper' => 'mkdru-facets-form-wrapper',
+      ),
+    );
+  }
+
+  $form['new_facet']  = array(
+    '#type' => 'fieldset',
+    '#title' => t('Add new facet...'),
+    '#tree' => TRUE,
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE
+  );
+  $form['new_facet']['canonical'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Canonical name of new facet'),
+  );
+  $form['new_facet']['button'] = array(
+    '#type' => 'submit',
+    '#value' => t('Add facet'),
+    '#description' => t('Configure additional facets based on Pazpar2/SP termlists'),
+    '#weight' => 1,
+    '#submit' => array('mkdru_add_facet_form'),
+    '#ajax' => array(
+      'callback' => 'mkdru_ajax_facet_callback', 
+      'wrapper' => 'mkdru-facets-form-wrapper',
+    ),
+  );
+  $form['#validate'][] = 'mkdru_settings_validate';
+  return $form;
+}
+
+function mkdru_add_facet_form($form, &$form_state) {
+  $newfacet = $form_state['values']['new_facet']['canonical'];
+  $form_state['values']['settings']['facets'][$newfacet] = NULL;
+  $form_state['rebuild'] = TRUE;
+}
+
+function mkdru_remove_facet($form, &$form_state) {
+  $delfacet = $form_state['clicked_button']['#mkdru facet'];
+  if ($delfacet)
+    unset($form_state['values']['settings']['facets'][$delfacet]);
+  // Block table is not rebuilt like in D6 so we need to remove blocks explicitly
+  // This is a bit preemptive but the block still reappears in block_list if you
+  // decide not to save the facet deletion.
+  // Only applies if the search is a node.
+  if ($form_state['values']['nid']) {
+    db_delete('block')->condition(db_and()
+      ->condition('module', 'mkdru')
+      ->condition('delta', 'mkdru_facet_' . $delfacet . '_' . $form_state['values']['nid'])
+      )->execute();
+  }
+  $form_state['rebuild'] = TRUE;
+}
+
+function mkdru_ajax_facet_callback($form, &$form_state) {
+  return $form['settings']['facets'];
+}
+
+/**
+ * Input validation for the settings form
+ */
+function mkdru_settings_validate($form, &$form_state) {
+  if (!preg_match('/^[A-Za-z0-9_-]*$/', 
+      $form_state['values']['new_facet']['canonical'])) {
+    form_set_error('new_facet][canonical', t('Invalid character'));
+  }
+  if (!valid_url($form_state['values']['settings']['pz2_path'])) {
+    form_set_error('settings][pz2_path', 'Pazpar2 path not valid');
+  }
+  elseif (substr($form_state['values']['settings']['pz2_path'], 0, 1) != '/') {
+    form_set_error('settings][pz2_path', t('Pazpar2 path must be absolute relative to the current domain.'));
+  }
+
+  if ($form_state['values']['settings']['use_sessions'] != 0
+    && $form_state['values']['settings']['use_sessions'] != 1) {
+    form_set_error('settings][use_sessions', t('Corrupt form input.'));
+  }
+
+  if (!preg_match('/^[A-Za-z0-9]*$/', $form_state['values']['settings']['sp']['user'])) {
+    form_set_error('settings][sp][user', t('Invalid character.'));
+  }
+
+  foreach (array_keys($form_state['values']['settings']['facets']) as $facet) {
+    if (!preg_match('/^[A-Za-z0-9_-]*$/', $form_state['values']['settings']['facets'][$facet]['pz2Name'])) {
+      form_set_error('settings][facets][' . $facet . '][pz2Name', t('Invalid character.'));
+    }
+    if (!preg_match('/^[A-Za-z]*$/', $form_state['values']['settings']['facets'][$facet]['limiter'])) {
+      form_set_error('settings][facets][' . $facet . '][limiter', t('Invalid character.'));
+    }
+    if ($form_state['values']['settings']['facets'][$facet]['multiLimit'] != 0
+      && $form_state['values']['settings']['facets'][$facet]['multiLimit'] != 1) {
+      form_set_error('settings][facets][' . $facet . '][multiLimit', t('Corrupt form input.'));
+    }
+    if (!is_numeric($form_state['values']['settings']['facets'][$facet]['max'])) {
+      form_set_error('settings][facets][' . $facet . '][max', t('Numeric value required.'));
+    }
+    if (!is_numeric($form_state['values']['settings']['facets'][$facet]['orderWeight'])) {
+      form_set_error('settings][facets][' . $facet . '][orderWeight', t('Numeric value required.'));
+    }
+  }
+}
+
+// Node config
+/**
+* Implements hook_form()
+*/
+function mkdru_form(&$node, &$form_state) {
+  if (isset($node->mkdru->settings)) {
+    // Second decode parameter indicates associative array
+    $form_state['build_info']['args']['settings'] = json_decode($node->mkdru->settings, TRUE);
+  }
+  $form = drupal_retrieve_form('mkdru_settings_form', $form_state);
+  $type = node_type_get_type($node);
+  $form['title'] = array(
+    '#type' => 'textfield',
+    '#title' => check_plain($type->title_label),
+    '#required' => FALSE,
+    '#default_value' => $node->title,
+    '#weight' => -5
+  );
+  return $form;
+}
+
+/**
+* Implements hook_insert().
+*/
+function mkdru_insert($node) {
+  $fields = array('nid' => $node->nid, 'vid' => $node->vid,
+            'settings' => json_encode($node->settings));
+  db_insert('mkdru')->fields($fields)->execute();
+}
+
+/**
+* Implements hook_update().
+*/
+function mkdru_update($node) {
+  if ($node->revision) {
+    // New revision; treat it as a new record.
+    mkdru_insert($node);
+  }
+  else {
+    db_update('mkdru')
+      ->condition('vid', $node->vid)
+      ->fields(array('settings' => json_encode($node->settings)))
+      ->execute();
+    block_flush_caches();
+  }
+}
+
+/**
+ * Implements hook_node_revision_delete()
+ */
+function mkdru_node_revision_delete($node) {
+  db_delete('mkdru')
+    ->condition('vid', $node->vid)
+    ->execute();
+}
+
+/**
+ * Implements hook_delete()
+ */
+function mkdru_delete($node) {
+  // Deleting by nid covers all revisions.
+  db_delete('mkdru')
+    ->condition('nid', $node->nid)
+    ->execute();
+  // Block table is not rebuilt like in D6 so we need to remove blocks explicitly
+  db_delete('block')->condition(db_and()
+    ->condition('module', 'mkdru')
+    ->condition('delta', '%\_' . $node->nid, 'like')
+    )->execute();
+}
+
+
+
+// Node rendering
+/**
+* Implements hook_load()
+*/
+function mkdru_load($nodes) {
+  $result = db_query('SELECT * FROM {mkdru} WHERE nid IN (:nids)', array(':nids' => array_keys($nodes)));
+  foreach ($result as $record) {
+    $nodes[$record->nid]->mkdru = $record;
+  }
+}
+
+/**
+* Implements hook_theme().
+*/
+function mkdru_theme() {
+  return array(
+    'mkdru_form' => array(
+      'template' => 'mkdru-form',
+      'variables' => array(),
+    ),
+    'mkdru_results' => array(
+      'template' => 'mkdru-results',
+      'variables' => array(),
+    ),
+    'mkdru_js' => array(
+      'variables' => array('setting' => NULL),
+    ),
+    'mkdru_block_search' => array(
+      'template' => 'mkdru-block-search',
+      'variables' => array('nid' => NULL, 'path' => NULL),
+    ),
+    'mkdru_block_facet' => array(
+      'template' => 'mkdru-block-facet',
+      'variables' => array('class' => NULL)
+    )
+  );
+}
+
+/**
+* Theme function to include Javascript search client and deps
+*/
+function theme_mkdru_js(&$variables) {
+  $path = drupal_get_path('module', 'mkdru');
+  // Pazpar2 client library
+  drupal_add_js(variable_get('pz2_js_path', '/pazpar2/js') . '/pz2.js', array(
+    'type' => 'external', 'scope' => 'footer', 'defer' => FALSE, 'preprocess' => TRUE));
+  // jQuery plugin for query string/history manipulation.
+  drupal_add_library('system', 'jquery.bbq');
+  drupal_add_js($path . '/mkdru.theme.js', array(
+    'type' => 'file', 'scope' => 'footer', 'defer' => FALSE, 'preprocess' => TRUE));
+  drupal_add_js($path . '/mkdru.client.js', array(
+    'type' => 'file', 'scope' => 'footer', 'defer' => FALSE, 'preprocess' => TRUE));
+  drupal_add_js($variables['setting'], 'setting');
+}
+
+/** 
+* Implements hook_view()
+*/
+function mkdru_view($node, $view_mode) {
+  if ($view_mode == 'full') {
+    $node->content['mkdru_js'] = array(
+      '#markup' => theme('mkdru_js', array('setting' 
+        => array('mkdru' => array('settings' => $node->mkdru->settings)))),
+      '#weight' => 0,
+    );
+    $node->content['mkdru_form'] = array(
+      '#markup' => theme('mkdru_form'), 
+      '#weight' => 1,
+    );
+    $node->content['mkdru_results'] = array(
+      '#markup' => theme('mkdru_results'), 
+      '#weight' => 2,
+    );
+  }
+  return $node;
+}
+
+
+
+// Blocks
+/** 
+* Implements hook_block_info()
+*/
+function mkdru_block_info() {
+  $blocks = array();
+  $result = db_query("SELECT title, {mkdru}.nid as nid, settings FROM {node},{mkdru} WHERE {mkdru}.nid = {node}.nid;");
+  foreach ($result as $node) {
+    // search blocks
+    $blocks['mkdru_search_' . $node->nid]['info'] = 
+        t('mkdru - search box for "' . $node->title . '"');
+    $blocks['mkdru_search_' . $node->nid]['cache'] = DRUPAL_NO_CACHE;
+    // facet blocks
+    $settings = json_decode($node->settings, TRUE);
+    foreach ($settings['facets'] as $facet_name => $facet) {
+      $key = 'mkdru_facet_' . $facet_name . '_' . $node->nid;
+      $blocks[$key]['info'] = 'mkdru - ' . $facet_name
+        . ' ' . t('facet for') . ' "' . $node->title . '"';
+      $blocks[$key]['visibility'] = 1;
+      $blocks[$key]['pages'] = 'node/' . $node->nid;
+      $blocks[$key]['cache'] = DRUPAL_CACHE_GLOBAL;
+    }
+  };
+  return $blocks;
+}
+
+/** 
+* Implements hook_block_view()
+*/
+function mkdru_block_view($delta) {
+  if (substr($delta, 0, 13) == 'mkdru_search_') {
+    $nid = substr($delta, 13);
+    $block['content'] = theme('mkdru_block_search',
+      array('nid' => $nid, 'path' => '/node/' . $nid));
+    return $block;
+  }
+  elseif (preg_match('/^mkdru_facet_(.*)_(\d+)$/', $delta, $matches) > 0) {
+    $facet = $matches[1];
+    $nid = $matches[2];
+    $result = db_query("SELECT settings FROM {mkdru} WHERE nid = :nid;", array(':nid' => $nid));
+    $settingsjson = $result->fetchObject()->settings;
+    $settings = json_decode($settingsjson, TRUE);
+    if (isset($settings['facets'][$facet]['displayName'])) {
+      $block['subject'] = check_plain($settings['facets'][$facet]['displayName']);
+    }
+    $block['content'] = theme('mkdru_block_facet', array('class' => 'mkdru-facet-' . $facet));
+    return $block;
+  }
+}

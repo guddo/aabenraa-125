@@ -1,0 +1,3515 @@
+/* ***** reset styles ***** */
+
+* { margin:0; padding:0; }
+
+/* page-user */
+.panel-1col .pane-page-tabs {
+  float: left;
+  width: 25%;
+}
+
+.panel-1col .pane-page-tabs .pane-content {
+  margin-right: 1em;
+}
+
+.page-user-edit .panel-1col .pane-page-tabs + .panel-separator + .pane-page-tabs {
+  float: left;
+  width: 25%;
+}
+
+.page-user-edit .panel-1col .pane-page-tabs + .panel-separator + .pane-page-tabs  .pane-content {
+  margin-right: 1em;
+}
+
+.panel-1col .pane-page-tabs + .panel-separator + .pane-page-tabs {
+  float: right;
+  width: 75%;
+}
+
+.panel-1col .pane-page-tabs + .panel-separator + .pane-page-tabs  .pane-content {
+  margin-right: 0;
+}
+
+.panel-1col .pane-user-profile,
+.panel-1col .pane-form,
+.panel-1col .pane-loans,
+.panel-1col .pane-reservations,
+.panel-1col .pane-debts,
+.panel-1col .pane-ding-dibs-dibs-terms-of-sale,
+.panel-1col .pane-ding-dibs-dibs-cards-supported {
+  float: right;
+  width: 75%;
+}
+
+/* page */
+.panel-3col .panel-col-first,
+.panel-3col-stacked .panel-col-first,
+.panel-2col .panel-col-first {
+    width: 20%;
+}
+
+.panel-3col .panel-col,
+.panel-3col-stacked .panel-col {
+    width: 55%;
+}
+
+.panel-3col .panel-col-last,
+.panel-3col-stacked .panel-col-last,
+.panel-2col-stacked .panel-col-last {
+    width: 25%;
+}
+
+.panel-2col .panel-col-last {
+    width: 80%;
+}
+
+.panel-2col-stacked .panel-col-first {
+    float: left;
+    width: 75%;
+}
+
+.panel-2col-stacked .panel-col-last {
+    float: left;
+}
+
+.panel-3col-stacked .panel-col-last {
+    float:right;
+}
+
+.panel-3col-stacked .panel-col-first .inside,
+.panel-3col .panel-col-first .inside {
+    margin: 0 0.5em 0 0;
+    padding-bottom: 1em;
+}
+
+.panel-2col-stacked .panel-col-top .inside {
+    margin-bottom: 0;
+    padding-bottom: 1em;
+}
+
+img, fieldset {
+  border: 0;
+}
+
+body, select, input, textarea {
+  font: 100%/1.0 arial, helvetica, sans-serif;
+  line-height: 1.4em;
+}
+
+body {
+  text-align:center;
+}
+
+body.toolbar {
+    padding-top: 0em;
+}
+
+element.style {
+    padding-top: 0;
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+  padding-bottom: 0.8em;
+  line-height: 1.2em;
+}
+
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.8em;
+}
+
+h3 {
+  font-size: 1.6em;
+}
+
+h4 {
+  font-size: 1.4em;
+}
+
+h5 {
+  font-size: 1.2em;
+}
+
+h6 {
+  font-size: 1em;
+}
+
+p {
+  padding-bottom: 1.2em;
+}
+
+
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:active {
+  text-decoration: none;
+}
+
+input {
+  border-width: 0;
+  font-weight: bold;
+  font-size: 0.9em;
+  padding: 0.1em 0.25em;
+}
+
+input.form-text {
+  border-width: 1px;
+  border-style: solid;
+  width: 18em;
+}
+
+
+
+
+/* ***** reusable class ***** */
+
+.error {
+  color: #C00;
+  font-weight: bold;
+}
+
+.confirmation {
+  color: #080;
+  font-weight: bold;
+}
+
+div.fieldset {
+  border: solid 1px #999;
+  padding: 1em;
+}
+
+legend span {
+  display: block;
+}
+
+.left {
+  display: block;
+  float: left;
+}
+
+.feed-icon {
+  width: 16px;
+  height: 16px;
+}
+
+
+/* ***** match placeholder/watermark padding to border+padding for input element ***** */
+
+label.placeholder {
+  cursor: text;
+  padding: 0.15em 0.25em;
+  color: #ccc;
+}
+
+/* html5 placeholder support */
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+  color:#ccc;
+}
+
+input:placeholder, textarea:placeholder {
+  color:#ccc;
+}
+
+
+/* ***** http://www.cssstickyfooter.com/ ***** */
+
+/* declared at top
+* { margin:0; padding:0; }
+must declare 0 margins on everything, also for main layout components use padding, not
+vertical margins (top and bottom) to add spacing, else those margins get added to total height
+and your footer gets pushed down a bit more, creating vertical scroll bars in the browser
+*/
+
+html, body {height: 100%;}
+
+#wrap {
+  min-height: 100%;
+  width: 1056px;
+  margin:0px auto;
+  text-align:left;
+}
+
+#wrap-right {
+  min-height: 100%;
+  width: 1056px;
+  background: transparent url(../images/bg_body_left.png) no-repeat left top;
+}
+
+#wrap-left {
+  min-height: 100%;
+  width: 1036px;
+  margin-left: 20px;
+  background: transparent url(../images/bg_body_right.png) no-repeat right top;
+}
+
+#wrap-right.bottom-up {
+  background: transparent url(../images/bg_body_left.png) no-repeat left bottom;
+}
+
+#wrap-left.bottom-up {
+  background: transparent url(../images/bg_body_right.png) no-repeat right bottom;
+}
+
+#header {
+  min-height: 100%; /* JGN: messes Opera up? */
+  width: 1016px;
+}
+
+.subheader {
+  background: url('../images/orange_line.png') repeat-x 0px -3px;
+  min-height: 100%;
+  width: 1016px;
+  position: relative;
+  top: -2px;
+  z-index: 10;
+}
+
+#main {
+  width: 1016px;
+  overflow:auto;
+  padding-bottom: 200px;
+  background: #fff none;
+  position: relative;
+  top: -2px;
+}  /* padding-bottommust be same height as the footer */
+
+#footer {
+  position: relative;
+  width: 1016px;
+  position: relative;
+  height: 200px;
+  clear:both;
+  background: #fff none;
+  margin: -200px auto 0 auto;  /* negative value of footer height */
+}
+
+/*Opera Fix*/
+body:before {
+  content:"";
+  height:100%;
+  float:left;
+  width:0;
+  margin-top:-32767px;
+}
+
+/* Throbber */
+html.js input.form-autocomplete {
+  background-position: 100% 6px; /* LTR */
+}
+html.js input.throbbing {
+  background-position: 100% -14px; /* LTR */
+}
+
+
+/* ***** http://www.htmlremix.com/css/curved-corner-border-radius-cross-browser ***** */
+
+.rounded-corners {
+  -moz-border-radius: 4px; /* Firefox */
+  -webkit-border-radius: 4px; /* Safari and chrome */
+  -khtml-border-radius: 4px; /* Linux browsers */
+  border-radius: 4px; /* CSS3 */
+
+}
+
+.label-colon { display: inline; }
+
+/* *****  region header ***** */
+
+#logo img {
+  padding: 1em;
+}
+
+#header {
+  padding-bottom: 2px;
+  z-index: 100;
+}
+
+.region-header {
+  padding-bottom: 3px;
+}
+
+#block-system-main-menu {
+  background: url('../images/bg_header.png') repeat-x bottom left;
+}
+
+#header .links {
+  border-top: 1px solid
+}
+
+#header .links ul {
+  list-style: none;
+}
+
+#header .links li {
+  display: inline-block;
+  font-size: 1.1em;
+  margin: 0;
+  padding: 0;
+}
+
+#header .links li a {
+  display:inline-block;
+  padding: .5em .5em .3em .5em;
+  margin: .2em 0 0 0;
+}
+
+#header .links li.first {
+  margin-left: .4em;
+}
+
+#header .links li a:hover {
+  text-decoration: none;
+}
+
+
+/* ***** region subheader ***** */
+
+.region-subheader {
+  height: 74px; margin: 0 1em;
+  z-index: 10;
+}
+
+
+
+/* ***** block-user-login, block-search-form ***** */
+
+#block-user-login, #block-search-form {
+  font-size: 1.0em;
+  height: 4.6em;
+  float: left;
+  top: 3px;
+}
+
+#block-user-login .content, #block-search-form .content {
+  padding: 0.25em 0 0.25em 0em;
+}
+
+#block-user-login .form-item, #block-user-login .form-actions,
+#block-search-form .form-item, #block-search-form .form-actions {
+  margin: 0;
+  padding: 0.5em 0 0.25em 0;
+  float: left;
+}
+
+#block-user-login span, #block-search-form .lead-text  {
+  display : block;
+  float: left;
+}
+
+#block-user-login .lead-text, #block-search-form .lead-text {
+  color: #fff;
+  line-height: 1.6em;
+  font-weight: bold;
+  margin: 0em 0.5em 0 0;
+  padding: 0.5em 0 0.7em 0;
+}
+
+#block-search-form .lead-text {
+  width: 10.25em;
+}
+
+#block-user-login form label {
+  display : none;
+}
+
+#block-user-login .form-item input,
+#block-search-form .form-item-search-block-form input {
+  margin: 0 0.5em 0 0;
+  padding: 0 0.25em;
+  font-size: 1em;
+  width: 5em;
+  border-width: 0;
+  height: 1.6em;
+  line-height: 1.6em;
+  display: block;
+  float: left;
+}
+
+#block-search-form #edit-advanced .form-item {
+  clear: both;
+  display: block;
+}
+
+#block-search-form #edit-advanced .form-item label {
+  margin-left: 1.25em;
+  float: left;
+}
+
+#block-search-form #edit-advanced .form-item input {
+  margin: 0 0.5em 0 11.5em;;
+  padding: 0 0.25em;
+  font-size: 1em;
+}
+
+#block-search-form #edit-advanced .form-item .description {
+  display: none;
+}
+
+#block-user-login input.form-submit,
+#block-search-form input.form-submit  {
+  font-weight: bold;
+  border-width: 0;
+  font-size: 1em;
+  height: 1.6em;
+  line-height: 1.6em;
+  padding: 0 0.5em;
+}
+
+
+/* ***** block-user-login ***** */
+
+#block-user-login > div {
+  float: right;
+}
+
+#block-user-login .form-item input#edit-name {
+  width: 8em;
+}
+
+#block-user-login .form-item input#edit-pass {
+  width: 8em;
+}
+
+#block-user-login {
+  width: 46%;
+  padding-left: 1em;
+  padding-right: 0.5em;
+  clear: right;
+}
+
+
+/* ***** block-system-user-menu ***** */
+
+
+#block-system-user-menu {
+  padding: 0.2em 1.25em 0.25em 0em;
+  font-size: 1.0em;
+  float: right;
+}
+
+#block-system-user-menu .content {
+  color: #fff;
+  padding: 0.5em 0;
+}
+
+#block-system-user-menu ul li.leaf {
+  list-style: none outside none;
+  display: inline-block;
+  float: left;
+  border: 0px dotted #ccc;
+  padding: 0 0.5em;
+}
+
+#block-system-user-menu ul li.leaf a {
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+#block-system-user-menu ul li.leaf a:hover {
+  text-decoration: none;
+}
+
+#block-system-user-menu ul li.first {
+  line-height: 1.6em;
+  height: 1.6em;
+}
+
+#block-system-user-menu ul li.last {
+  line-height: 1.6em;
+  height: 1.6em;
+  font-weight: bold;
+  font-size: 1em;
+}
+
+#block-ding-user-frontend-ding-username {
+  padding-top: .25em;
+  height: 2.4em;
+}
+
+#block-system-user-menu a {
+  color: #fff;
+}
+
+#ding-user-icon {
+  float: left;
+  text-align: right;
+  width: 23px;
+}
+
+#ding-user-icon .content {
+  width: 23px;
+  height: 23px;
+  float: right;
+  margin-top: 0.5em;
+  background-image: url('../images/icons/icon_person_23x23_white_on_transparent.png');
+}
+
+#ding-user-name {
+  padding: 0.6em 0em 0.25em 0.5em;
+  float: left;
+  width: 22%;
+  max-width: 22%;
+  height: 1.35em;
+  max-height: 1.35em;
+  overflow: hidden;
+  border: 0px dotted #ccc;
+}
+
+#ding-user-name .content {
+  color: #fff;
+  font-weight: bold;
+  padding: 0em 1em 0em 0em;
+  border-right: 2px solid;
+}
+
+#block-ding-user-frontend-ding-user-loan-number {
+  clear: right;
+}
+
+#ding-user-loan-amount,
+#ding-user-reservation-amount,
+#ding-user-debt-amount,
+#ding-user-bookmark-amount {
+  color: #fff;
+  font-size: 1.0em;
+  float: left;
+  padding: 0em 0.5em 0em 0em;
+  border: 0px dotted #ccc;
+}
+
+
+#ding-user-loan-amount .content,
+#ding-user-reservation-amount .content,
+#ding-user-debt-amount .content {
+  padding-right: 0.5em;
+  border-right: 2px solid;
+}
+
+
+#ding-user-loan-amount .content a,
+#ding-user-reservation-amount .content a,
+#ding-user-debt-amount .content a,
+#ding-user-bookmark-amount .content a {
+  color: #fff;
+}
+
+#ding-user-loan-amount .amount,
+#ding-user-reservation-amount .amount,
+#ding-user-debt-amount .amount,
+#ding-user-bookmark-amount .amount {
+  font-weight: bold;
+  padding-left: 0.5em;;
+}
+
+
+/* ***** block-search-form ***** */
+
+#block-search-form {
+  width: 48%;
+  max-width: 48%;
+  margin-left: 1.25em;
+}
+
+#block-search-form .content {
+  border-right: 2px groove;
+  margin-right: 1em;
+  padding-right: 1em;
+  margin-top: 0.5em;
+  padding-top: 0.25em;
+}
+
+#block-search-form .form-item {
+  padding-top: 0;
+}
+
+#block-search-form .lead-text {
+  padding-top: 0;
+}
+
+#block-search-form .form-actions {
+  padding-top: 0;
+}
+
+#block-search-form .form-item input {
+  width: 20em;
+}
+
+#block-search-form .clearfix {
+  height: 3em;
+}
+
+
+/* ***** Advanced search toggle hide/show link ***** */
+
+/* Remove the standard collapsible icon. */
+html.js fieldset.collapsible .fieldset-legend,
+html.js fieldset.collapsed .fieldset-legend {
+  background-image: none;
+  padding-left: inherit;
+}
+
+#edit-advanced {
+  padding: 0;
+  top: 42px;
+}
+
+/* Setting relative so the advanced search dropdown is relative to
+region-subheader. */
+.region-subheader {
+position: relative;
+}
+
+#edit-advanced {
+  position: static
+}
+
+#advanced-search-wrapper {
+  position: static;
+  clear: left;
+}
+
+#edit-advanced .fieldset-wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+}
+
+/* Contextual links sets position relative, which messes with our dropdown. */
+.region-subheader .contextual-links-region {
+position: static;
+}
+
+#block-search-form #extend-form-div,
+#edit-advanced legend  {
+  font-weight: bold;
+  display: block;
+  clear: both;
+  font-size: 0.85em;
+}
+
+#block-search-form #extend-form-div {
+  margin-top: -4em;
+  margin-left: 12.75em;
+}
+
+#edit-advanced legend a {
+  margin-left: 12.75em;
+}
+
+#block-search-form #extend-form-div a,
+#edit-advanced legend a {
+  color: #fff;
+  text-decoration: none;
+  padding-right: 20px;
+  background: url('../images/icons/icon_rightarrow_12x12_transparent_on_white.png') no-repeat center right;
+}
+
+#block-search-form #extend-form-div #extend-form-clear {
+  margin-left: 20em;
+  color: #fff;
+  text-decoration: none;
+  padding-right: 20px;
+  background: url('../images/icons/icon_cross_12x12_transparent_on_white.png') no-repeat center right;
+}
+
+
+#block-search-form #extend-form-div a:hover {
+  text-decoration: underline;
+}
+
+
+/* ***** region header menu ***** */
+
+#block-system-navigation {
+  margin-top: 66px;
+  padding-top: 1px;
+  background: url(../images/bg_topmenu.png) repeat-x top right;
+  height: 2.4em;
+  line-height: 2.4em;
+  font-weight: bold;
+}
+
+#block-system-navigation ul {
+  list-style: none;
+  margin: 0 1em;
+}
+
+#block-system-navigation li {
+  display: inline;
+  margin: 0 0.25em 0 0;
+  white-space: nowrap;
+}
+
+#block-system-navigation li a {
+  padding: 0 0.25em;
+  color: #52504f;
+  text-decoration: none;
+}
+
+#block-system-navigation .active-trail {
+  padding-bottom: 1px;
+  background: white;
+}
+
+
+/* *****  region messages ***** */
+
+#messages {
+  padding: 0 1em 1.5em 1em;
+}
+
+/* ***** breadcrumbs ***** */
+
+#breadcrumb {
+  margin: 1em 1em 0em 1em;
+}
+
+#breadcrumb .title {
+  float: left;
+  font-size: 0.8em;
+  font-weight: normal;
+  line-height: inherit;
+  margin-right: 0.5em;
+  padding: 0;
+  width: auto;
+}
+
+#breadcrumb .trail {
+  float: left;
+  font-size: 0.8em;
+}
+
+#breadcrumb .trail a:hover {
+  text-decoration: underline;
+}
+
+/* *****  region content ***** */
+
+.region-content {
+  padding: 1em 1em 1.5em 1em;
+}
+
+/* *****  region footer ***** */
+
+.region-footer {
+  font-size: 0.8em;
+  padding-top: 2em;
+  min-height: 175px;
+}
+
+.region-footer .content,
+.region-footer h2 {
+  margin: 0 1em 0em 1em;
+}
+
+.region-footer ul {
+  list-style: none;
+  font-size: 0.9em;
+}
+
+.region-footer .block-menu {
+  display: block;
+  float: left;
+  line-height: 1.5em;
+  width: 20%;
+  margin-bottom: 1em;
+}
+
+.region-footer h2 {
+  font-size: 1.2em;
+  text-decoration: none;
+  text-align: left;
+  text-transform: uppercase;
+  padding-bottom: 0;
+}
+
+.region-footer ul li {
+  clear: both;
+  margin: 0 0.25em 0 0;
+  white-space: nowrap;
+}
+
+.region-footer ul li.leaf {
+  list-style-image: none;
+  list-style-type: none;
+}
+
+.region-footer li a {
+  padding: 0 0.25em;
+  color: #52504f;
+  text-decoration: none;
+}
+
+.region-footer .block-ding-library {
+  font-size: 0.9em;
+  border-top: 1px solid;
+  padding: 1.5em 0;
+  clear: both;
+  text-align: left;
+  overflow: auto; /* for IE7 */
+}
+
+.region-footer .block-ding-library h2 {
+  display: none;
+}
+
+.region-footer .address {
+  line-height: 1em;
+}
+
+.region-footer .address .name,
+.region-footer .address .address,
+.region-footer .address .city,
+.region-footer .address .phone,
+.region-footer .address .fax,
+.region-footer .address .mail {
+  display: block;
+  float: left;
+}
+
+.region-footer .address a {
+  text-decoration: underline;
+}
+
+.region-footer .address .name {
+  font-weight: bold;
+}
+
+.region-footer .address .name,
+.region-footer .address .address {
+  margin-right: 1em;
+}
+
+.region-footer .address .city,
+.region-footer .address .phone,
+.region-footer .address .fax,
+.region-footer .address .mail {
+   padding: 0 1em;
+   border-left-width: 1px;
+   border-left-style: solid;
+}
+
+/* **************** pane campaign **************** */
+
+.pane-campaign {
+}
+
+.pane-campaign .ding-campaign-item {
+    margin-bottom: 1em;
+    border: 1px solid #cccccc;
+    padding: 0.5em;
+}
+
+.pane-campaign .ding-campaign-item p {
+    padding-bottom: 0.5em;
+}
+
+.pane-campaign .ding-campaign-item.ding-campaign-item.ding-campaign-item-image {
+    padding-bottom: 1em;
+    border-width: 0px;
+    padding: 0em;
+    overflow: hidden;
+}
+
+
+.pane-campaign .ding-campaign-item img {
+    display:block;
+    margin-right:auto;
+    margin-left:auto;
+}
+
+.pane-campaign .ding-campaign-item-plain {
+    font-size:2em;
+    line-height: 1em;
+    padding: 0.5em;
+    padding-bottom: 1em;
+}
+
+/* *****  pane-ding-news, pane-ding-event common ****** */
+
+.pane-ding-news,
+.pane-ding-news .views-row,
+.view-ding-news,
+.view-ding-event {
+  clear: both;
+}
+
+.view-ding-news p,
+.view-ding-event p {
+  padding: 0 0 0.5em 0;
+}
+
+.page-news h2.panel-title,
+.page-events h2.panel-title {
+  margin: 0 0 0.5em 0;
+  padding: 0 0 0.25em 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.ding-news-title,
+.pane-ding-news h3,
+.view-ding-news .title,
+.view-ding-event .title {
+  font-size: 1em;
+  padding: 0.5em 0 0.25em 0;
+}
+
+.ding-news-highlight h2 a,
+.view-ding-news h3 a,
+.view-ding-event .title a {
+  color: #2e2e2e;
+}
+
+.view-ding-news h3 a:hover,
+.view-ding-event .title a:hover {
+  color: #6A6A6A;
+}
+
+.ding-news-library,
+.ding-event-teaser-list .ding-event-library a,
+.field-name-ding-news-library,
+.field-name-group-audience,
+.view-ding-news .views-field-group-audience,
+.view-ding-event .views-field-group-audience {
+  margin-right: 0.5em;
+  font-size: 0.9em;
+  background-color: #010101;
+  float: left;
+}
+
+.ding-news-library a,
+.ding-event-library a,
+.field-name-ding-news-library a,
+.field-name-ding-news-library a:visited,
+.field-name-group-audience a,
+.field-name-group-audience a:visited,
+.view-ding-news .views-field-views-field-group-audience a,
+.view-ding-news .views-field-views-field-group-audience a:visited,
+.view-ding-event .views-field-group-audience a,
+.view-ding-event .views-field-group-audience a:visited {
+  line-height: 1.2em;
+  margin: 0 0.5em;
+  color: #ffffff;
+}
+
+.field-name-ding-event-teaser,
+.field-name-ding-news-teaser {
+  padding: 1em 0 0.5em 0;
+  font-size: 1.2em;
+}
+
+.views-fiels-ding-event-teaser,
+.views-field-ding-news-teaser {
+  padding: 0 0 0.5em 0;
+}
+
+.node-ding-news .author-byline,
+.node-ding-event .author-byline {
+  font-size: 1.1em;
+  padding: 0;
+  font-weight: bold;
+}
+
+.node-type-ding-news .field-name-ding-news-image img,
+.node-type-ding-event .field-name-ding-news-image img,
+.node-ding-news .field-name-ding-news-image img,
+.node-ding-event .field-name-ding-news-image img {
+  width: 100%;
+  padding-bottom: 1em;
+}
+
+.node-ding-news .author-byline .author-prefix,
+.node-ding-event .author-byline .author-prefix {
+  margin: 0 0.25em 0 0;
+}
+
+.node-ding-news ul.links li,
+.node-ding-event ul.links li {
+  display: block;
+  float: right;
+}
+
+.view-ding-news .views-row,
+.view-ding-event .views-row {
+  margin: 0 0 1em 0;
+  padding: 0 0 0.5em 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.view-ding-news .feed-icon,
+.view-ding-event .feed-icon {
+  clear: left;
+  float: left;
+}
+
+.page-node-events .feed-icon,
+.page-events .feed-icon {
+  margin-left: 0;
+}
+
+.view-ding-news .more-link a,
+.view-ding-event .more-link a {
+  padding-left: 18px;
+  font-weight: bold;
+}
+
+.view-ding-news .more-link a:hover,
+.view-ding-event .more-link a:hover {
+}
+
+
+/* *****  view-ding-news  ****** */
+
+.node h2.ding-news-title {
+  font-size: 1.8em;
+  padding: 0.5em 0 0.25em 0;
+  clear: none;
+}
+
+.field-name-ding-content-tags,
+.field-name-ding-news-category,
+.field-name-ding-news-materials,
+.field-name-ding-news-body {
+  margin: 0.5em 0;
+  padding: 0.5em 0;
+  border-bottom: 1px solid #ccc;
+  clear: both;
+}
+
+.field-name-ding-content-tags .field-label,
+.field-name-ding-news-category .field-label {
+  display: inline;
+}
+
+.field-name-ding-content-tags .field-items,
+.field-name-ding-news-category .field-items,
+.field-name-ding-content-tags .field-items .field-item,
+.field-name-ding-news-category .field-items .field-item {
+  display: inline;
+}
+
+.field-name-ding-content-tags .field-items .field-item,
+.field-name-ding-news-category .field-items .field-item {
+  margin-left: 1em;
+}
+
+.view-ding-event .views-row .right.has-image,
+.view-ding-news .views-row .right.has-image {
+  margin-left: 150px;
+}
+
+.view-ding-news .views-field-ding-news-image {
+  width: 134px;
+}
+
+.ding-news-timestamp,
+.view-ding-news .views-field-timestamp {
+  font-size: 0.9em;
+  font-weight: bold;
+}
+
+
+/* *****  pane-ding-news frontpage ****** */
+
+.node-type-ding-library .pane-ding-news .pane-content,
+.page-ding-frontpage .pane-ding-news .pane-content {
+  padding: 1em 0;
+}
+
+.node-type-ding-library .pane-ding-news,
+.page-ding-frontpage .pane-ding-news {
+  margin-bottom: 1em;
+}
+
+.node-type-ding-library .pane-ding-news .views-row .right,
+.page-ding-frontpage .pane-ding-news .views-row .right {
+  margin-left: 0;
+}
+
+.pane-content .ding-news-highlight .view-content .column-left {
+  width: 100%;
+}
+
+.view .field-name-field-main-image {
+  padding: 10px;
+  padding-left: 0;
+  width: 225px;
+  float: left;
+  text-align: center;
+}
+
+.node-type-ding-library .pane-ding-news .column-left,
+.page-ding-frontpage .pane-ding-news .column-left {
+  width: 48%;
+  margin-right: 4%;
+  padding: 0;
+  float: left;
+}
+
+.node-type-ding-library .pane-ding-news .column-right,
+.page-ding-frontpage .pane-ding-news .column-right {
+  width: 48%;
+  float: right;
+}
+
+.node-type-ding-library .pane-ding-news .more-link,
+.page-ding-frontpage .pane-ding-news .more-link {
+  margin-right: 1em;
+  float: right;
+  position: relative;
+  top: -1em;
+}
+
+/* *****  pane-ding-news library page ****** */
+
+.node-type-ding-library .views-row .right.has-image {
+  margin-left: 150px;
+}
+
+.node-type-ding-library .views-field-ding-news-image {
+  width: 134px;
+}
+
+
+
+/* *****  view-ding-event  ****** */
+
+.view-ding-event {
+  padding: 0 0 1em 0;
+  clear: both;
+}
+
+.ding-event-date {
+  width: 3.5em;
+  text-align: center;
+}
+
+span.date-display-single {
+  font-size: 0.9em;
+  color: #5C5959;
+}
+
+.ding-event-date p {
+  color: #5C5959;
+  padding: 0;
+  font-weight: bold;
+  font-size: 0.7em;
+  line-height: 1.1em;
+}
+
+.ding-event-date p.ding-event-weekday {
+  color: #8A8A89;
+}
+
+.ding-event-date p.ding-event-day {
+  font-size: 1.8em;
+  line-height: 0.9em;
+}
+
+.views-field-ding-event-image img {
+  margin: 0 1em 0.5em 0;
+}
+
+.field-name-field-event-date .field-label,
+.field-name-field-address .field-label {
+  width: 9em;
+  margin: 0 0 0.5em 0;
+  font-size: 1em;
+}
+
+.node-type-ding-event .date-display-single {
+  font-size: 1em;
+  color: #2E2E2E;
+}
+
+.node-type-ding-event .field-name-ding-event-materials .ting-overview,
+.node-type-ding-event .date-place {
+  font-size: 1em;
+  margin: 1.5em 0 1em 0;
+  padding: 0 0 1em 0;
+  border-bottom: 1px solid #ccc;
+}
+.node-type-ding-event .date-place legend { display: none; }
+
+.node-type-ding-event .ting-object .right-column {
+    font-size: 1em;
+}
+
+/* *****  view-ding-event - teaser list ****** */
+.ding-event-teaser-list h2 {
+  font-size: 1.6em;
+  font-weight: normal;
+  padding: 0.5em 0.5em 0.5em 2em;
+  background: url('../images/icons/icon_calendar_27x24_white_on_transparent.png') no-repeat 0.5em 0.4em;
+}
+
+.ding-event-teaser-list .pane-content {
+  padding: 1em 1em 0;
+}
+
+.ding-event-teaser-list .views-row {
+  padding: 0.5em 0 1em 0;
+}
+
+.ding-event-teaser-list .column-event {
+  width: 31%;
+  margin-left: 3%;
+  float: left;
+}
+
+.ding-event-teaser-list .column-event.first {
+  margin-left: 0%;
+}
+
+.ding-event-teaser-list .ding-event-library {
+  margin: 0 0 0.5em 0;
+}
+
+.ding-event-teaser-list .title {
+  font-size: 0.9em;
+  line-height: 1.2em;
+  padding: 0;
+}
+
+.column-event .left {
+  width: 150px;
+  float: left;
+}
+
+.column-event .left span.date-display-single {
+  color: #5C5959;
+  padding: 0;
+  font-weight: bold;
+  font-size: 0.7em;
+  line-height: 1.1em;
+}
+
+.ding-event-teaser-list .right {
+  margin-left: 5em;
+}
+
+.ding-event-teaser-list .right .ding-event-library {
+  padding: 0.25em 0.5em;
+  background-color: #010101;
+  line-height: 1.2em;
+}
+
+.ding-event-teaser-list .right .ding-event-library a {
+  margin: 0;
+  padding: 0;
+  float: none;
+}
+
+.ding-event-teaser-list .more-link {
+  margin-right: 1em;
+}
+
+.node-type-ding-library .ding-event-teaser-list .left,
+.page-ding-frontpage .ding-event-teaser-list .left {
+  width: 3.6em;
+  float: left;
+}
+
+.node-type-ding-library .ding-event-teaser-list .right,
+.page-ding-frontpage .ding-event-teaser-list .right {
+  margin-left: 4.8em;
+}
+
+
+
+/* *****  pane-search-result  ****** */
+/* *****   pane-search-ting   ****** */
+/* *****   page-ting-object   ****** */
+/* ***** page-ting-collection ****** */
+
+.page-ting-collection .pane-content,
+.page-ting-object .pane-content,
+.pane-search-result .pane-content,
+.page-search .pane-content,
+.page-search .pane-ding-facetbrowser .content {
+    padding-top: 0em;
+}
+
+/* facet browser don't provide a .pane-content */
+.pane-ding-facetbrowser > form {
+    padding-top: 0em;
+}
+
+.pane-search-result .search-snippet-info,
+.page-search-ting .search-snippet-info  {
+    padding-left: 0; border: 0px solid blue;
+}
+
+.pane-search-result li.search-result,
+.page-search-ting li.search-result  {
+    margin-bottom: 0.5em;
+    border-bottom: 1px solid #e7e7e6;
+}
+
+.page-search-ting li.ding-format-long {
+    padding-bottom: 0.5em;
+}
+
+.pane-search-result li.search-result p,
+.page-search-ting li.search-result p {
+    margin-top: 0em;
+    padding-top: 0em;
+    margin-bottom: 0em;
+    padding-bottom: 0em;
+}
+
+/*
+.page-search-ting p.search-snippet {
+    display: block;
+}
+*/
+
+/* suppress title rendered by ting-search-results.tpl.php */
+.pane-search-result h3.title,
+.page-search-ting h3.title {
+    display: none;
+}
+
+/** NODE SEARCH **/
+.view-ding-node-search .views-row {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+  margin: 0;
+}
+
+.field-type-ting-reference-reverse .field-name-field-list-image,
+.view-ding-node-search .field-name-field-list-image {
+  float: left;
+  width: 138px;
+  margin-right: 10px;
+}
+
+.field-type-ting-reference-reverse .field-name-field-list-image img {
+max-width:134px;
+height:auto;
+}
+
+/*.field-type-ting-reference-reverse .node .content,
+.view-ding-node-search .node .content {
+  margin-left: 148px;
+}*/
+
+.field-type-ting-reference-reverse .node-type,
+.view-ding-node-search .node-type {
+  color: #868786;
+  font-size: 0.9em;
+  line-height: 1em;
+  margin-bottom: 0.6em;
+  text-transform: uppercase;
+}
+
+.field-type-ting-reference-reverse h2,
+.view-ding-node-search h2 {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #000;
+  padding: 0;
+  margin-top:0.3em;
+}
+
+.field-type-ting-reference-reverse h2 a,
+.view-ding-node-search h2 a {
+  color: #000;
+}
+
+/* ***** universal search ***** */
+
+.mkdru-result-list li {
+    list-style: none outside none;
+    border-bottom: 1px solid #E7E7E6;
+    margin-bottom: 1em;
+    padding-bottom: 1em;
+}
+
+.mkdru-result-list h3 {
+    font-size: 1em;
+    padding-bottom: 0;
+}
+
+.mkdru-result-list .creator {
+    padding-bottom: 0.35em;
+}
+
+.mkdru-result-list .right-column.left {
+    float: none;
+    clear: both;
+}
+
+.mkdru-result-list p {
+    padding: 0;
+}
+
+.mkdru-result-list .mkdru-result-description {
+    display: block;
+    font-size: 0.8em;
+    line-height: 1.2em;
+    padding-top: 0.5em;
+}
+
+/* ***** node ***** */
+
+.node {
+  padding: 0;
+}
+
+.node h2 {
+  padding: 0 0 0.5em 0;
+}
+
+.node .content p {
+  padding: 0 0 0.5em 0;
+}
+
+/***** node type page content styles *****/
+/***** normal page - left menu *****/
+.page-node .menu-name-menu-sider {
+  border-top: 1px solid #ccc;
+}
+.page-node .menu-name-menu-sider ul {
+  margin:0;
+  padding: 0;
+  width: 188px;
+}
+.page-node .menu-name-menu-sider li {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.page-node .menu-name-menu-sider a {
+  font-size: 1em;
+  display: block;
+  padding: 8px;
+  width: 172px;
+  color: #000;
+  text-decoration: none;
+  border-bottom: 1px solid #ccc;
+}
+.page-node .menu-name-menu-sider a.active {
+  background-color: #e94928;
+  color: #fff;
+}
+
+/***** node type page content styles *****/
+
+page-node .pane-content h2 {
+}
+.page-node .pane-node-title {
+  font-size: 2em;
+  margin-bottom: 1em;
+}
+.page-node .pane-node-created {
+  font-size: 1em;
+  color: #666766;
+  font-weight: bold;
+  margin-bottom: 0.5em;
+}
+.page-node .pane-content .field-name-field-ding-body {
+  font-size: 1em;
+}
+.page-node .pane-content .field-name-field-ding-body a {
+  color: #2e2e2e;
+  text-decoration: underline;
+}
+.page-node .pane-content .field-name-field-ding-body a:hover {
+  color: #828182;
+  text-decoration: none;
+}
+.page-node .pane-content .field-name-field-ding-body a:visited {
+  color: #6c6c6c;
+  text-decoration: none;
+}
+
+
+/* ***** ting-object ***** */
+
+.ting-object .left-column .field-type-ting-cover img {
+    padding-top: 0.25em;
+}
+
+.ting-object .left-column img {
+    margin-right: 1em;
+}
+
+.ding-format-short .ting-object .left-column .field-type-ting-cover {
+    display: none;
+}
+
+.ting-object .left-column {
+    float: left;
+}
+
+.ting-object .right-column {
+    font-size: 0.85em;
+    line-height: 1.3em;
+    width: auto;
+}
+
+.ting-object.view-mode-full .ting-overview {
+    padding-bottom: 0;
+}
+
+.ting-object.view-mode-full .ting-object-overview {
+    padding-bottom: 0;
+}
+
+.ting-object.view-mode-collection-list + h2 {
+    padding-top: 1em;
+}
+
+
+.ding-format-short .ting-object .right-column {
+    width: 100%;
+}
+
+.ting-object h2 {
+    padding-bottom: 0em;
+    font-size: 1em;
+}
+
+.ding-format-short .ting-object h2 {
+    float: left;
+    margin-right: 0.5em;
+}
+
+.ting-object h3 {
+    padding-bottom: 0em;
+    font-size: 1em;
+}
+
+.ting-object .field-label-inline .field-items {
+    float: none;
+}
+
+
+.ting-object .field-type-ting-type:after,
+.ting-object .field-type-ting-title:after,
+.ting-object .field-type-ting-author:after,
+.ting-object .field-type-ting-series:after,
+.ting-object .field-type-ting-abstract:after,
+.ting-object .field-type-ting-subjects:after {
+  clear: none;
+}
+
+.ting-object .field-type-ting-author {
+    font-style: italic;
+    padding: 0 0 0.5em 0;
+    float: none;
+}
+
+.ding-format-short .ting-object .field-type-ting-author {
+    clear: none;
+}
+
+.ting-object .field-type-ting-series {
+   font-size: 0.9em;
+}
+
+.ding-format-short .ting-object .field-type-ting-series {
+    display: none;
+}
+
+.ting-object .field-type-ting-series .field-items {
+    padding: 0 0.5em 0 0;
+}
+
+.ting-object div.abstract {
+    padding: 0 0 0.5em 0;
+}
+
+.ding-format-short .ting-object .field-type-ting-abstract {
+    display: none;
+}
+
+.ting-object h3.serie-title {
+    padding: 0 0 0.5em 0;
+}
+
+.ding-format-short .ting-object h3.serie-title {
+    display: none;
+}
+
+.ting-object div.moreinfo a {
+    font-weight: bold;
+    padding-right: 10px;
+    background: url('../images/icons/icon_link_arrow.png') no-repeat 100% 60%;
+}
+
+.ting-object div.moreinfo {
+    display: none;
+    font-size: 0.9em;
+    padding-bottom: 0.5em;
+}
+
+.ding-format-short .ting-object div.moreinfo {
+    display: none;
+}
+
+.ting-object .field-type-ting-subjects {
+   font-size: 0.9em;
+}
+
+.ding-format-short .ting-object .field-type-ting-subjects {
+    display: none;
+}
+
+.ting-object .field-name-ting-type ul,
+.ting-object .field-name-ting-collection-types ul,
+.ting-object .field-type-ting-type ul li,
+.ting-object .field-name-ting-collection-types ul li {
+    list-style: none;
+    margin: 0;
+}
+
+.ting-object .availability {
+  display: inline;
+  background-color: #444;
+  font-weight: bold;
+  margin: 0;
+  padding: 0.15em 0.5em 0em 16px;
+  background: url('../images/icons/icon_book_14x14_grey.png') no-repeat center left;
+}
+
+.availability.pending {
+  background: url('../images/icons/icon_book_14x14_grey.png') no-repeat center left;
+}
+
+.availability.processed {
+  background: url('../images/icons/icon_book_14x14_pink.png') no-repeat center left;
+}
+
+.availability.available {
+  background: url('../images/icons/icon_book_14x14_blue.png') no-repeat center left;
+}
+
+.availability.reservable {
+  background: url('../images/icons/icon_book_14x14_orange.png') no-repeat center left;
+}
+
+.availability.reservable.available {
+  background: url('../images/icons/icon_book_14x14_greeen.png') no-repeat center left;
+}
+
+/* Online resources are kept grey: */
+.availability.processed.netdokument {
+  background: url('../images/icons/icon_book_14x14_grey.png') no-repeat center left;
+}
+
+.availability.processed.netmusik-album {
+  background: url('../images/icons/icon_book_14x14_grey.png') no-repeat center left;
+}
+
+.ting-object .field-type-ting-details {
+    padding: 2em 0 0.5em;
+}
+
+.ting-object .field-type-ting-details .field-label {
+    min-height: 40px;
+    padding-left: 40px;
+    border-bottom: 2px solid #e7e7e6;
+    line-height: 40px;
+    min-height: 40px;
+    font-size: 1.1em;
+    background: url('../images/icons/icon_book_30x30.png') no-repeat center left;
+}
+
+.group-material-details {
+    clear:both;
+    border-bottom: 2px solid #e7e7e6;
+    padding-bottom:0.5em;
+}
+
+.group-material-details h2 {
+    clear:both;
+    margin-bottom:0.5em;
+    min-height: 40px;
+    padding-left: 40px;
+    border-bottom: 2px solid #e7e7e6;
+    line-height: 40px;
+    min-height: 40px;
+    font-size: 1.1em;
+    background: url('../images/icons/icon_book_30x30.png') no-repeat center left;
+}
+
+.group-material-details .field-group-format-toggler a {
+    color:#000000;
+}
+
+.group-material-details .field {
+    font-size:0.85em;
+}
+
+.group-material-details .even {
+    margin-left:10em;
+    word-break: break-word;
+}
+
+.ting-object .object-information .item-list h4 {
+    font-size: 0.95em;
+    width: 8em;
+}
+
+.ting-object .object-information .item-list  {
+    font-size: 0.85em;
+    line-height: 1.3em;
+    border-bottom: 1px solid #e7e7e6;
+    padding: 0 0 0.5em 0;
+}
+
+/*.group-material-details {
+    margin-top:5em;
+    font-size: 0.85em;
+    line-height: 1.3em;
+    border-bottom: 1px solid #e7e7e6;
+    border-top: 1px solid #e7e7e6;
+    padding: 0 0 0.5em 0;
+}*/
+
+.ting-object .object-information .item-list .item-list {
+    border-width: 0px;
+    float: left;
+    width: 28em;
+}
+
+.ting-object .object-information .item-list ul {
+    margin: 0em;
+    padding: 0.5em 0;
+}
+
+.ting-object .object-information .item-list ul ul {
+    margin: 0em;
+    padding: 0em;
+}
+
+.ting-object .object-information ul {
+    background-color: #ffffff;
+    padding: 0;
+}
+
+.ting-object .object-information .item-list ul li {
+    margin: 0em;
+}
+
+.ting-object .object-information .item-list ul li.last {
+    padding: 0 0 0.75em 0;
+}
+
+.ting-object .object-information .item-list ul li li {
+    padding: 0em;
+}
+
+.ting-object .object-information .item-list ul li li.last {
+    padding: 0;
+}
+
+.ting-object .field-type-ding-periodical-issues form {
+    margin-top: 0em;
+    float: right;
+    padding-bottom: 2px;
+    padding-left: 1em;
+    position: relative;
+    top: -2px;
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.ting-object .field-type-ding-periodical-issues li {
+    clear: both;
+ /* list-style: disc outside url('../images/icons/icon_rightarrow_16x16_white_on_orange.png');*/
+    list-style:none;
+}
+
+.ting-object .field-type-ding-periodical-issues .ding-periodical-fold {
+    padding-left:20px;
+    background: url('../images/icons/icon_rightarrow_16x16_white_on_orange.png') no-repeat center left;
+    margin-bottom: 0.3em;
+    cursor:pointer;
+}
+
+.ting-object .field-type-ding-periodical-issues li li {
+    clear: both;
+    list-style: disc outside url('../images/icons/icon_rightarrow_13x13_white_on_orange.png');
+    /* border-bottom: 1px dashed gray; */
+}
+
+
+.field-name-ting-primary-object {
+  clear: both;
+}
+
+
+/* periodikum, netdokument, playstation2-spil. node */
+
+.pane-search-result p.clearfix,
+.page-search-ting p.clearfix {
+    clear: both;
+}
+
+
+/* ***** ting-relation & holdings headers ****** */
+
+.ting-relation.ting-relation-dbcaddihascreatordescription h2,
+.ting-relation.ting-relation-dbcaddihasreview h2,
+.ting-relation.ting-relation-dbcaddihassubjectdescription h2,
+.ting-relation.ting-relation-dbcaddihasonlineaccess h2,
+.pane-similarterms-ding-content-tags h2,
+.holdings h2,
+#comments h2 {
+    min-height: 40px;
+    padding-left: 40px;
+    border-bottom: 2px solid #e7e7e6;
+    line-height: 40px;
+    font-size: 1.1em;
+}
+
+.pane-similarterms-ding-content-tags h2 {
+    background: url('../images/icons/icon_tag_30X30.png') no-repeat center left;
+    background-position:0 3px;
+    padding-bottom:0.5em;
+}
+
+
+.pane-similarterms-ding-content-tags .item-list ul
+{
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;
+    margin-bottom:1em;
+    margin-top:0.5em;
+}
+
+.pane-similarterms-ding-content-tags .item-list li
+{
+    background-image: url('../images/arrow_gt.png');
+    background-repeat: no-repeat;
+    background-position: -1px 5px;
+    padding-left:15px;
+}
+
+
+.ting-relation.ting-relation-dbcaddihassubjectdescription h2 {
+    background: url('../images/icons/icon_book_30x30.png') no-repeat center left;
+}
+
+.ting-relation.ting-relation-dbcaddihascreatordescription h2 {
+    background: url('../images/icons/icon_person_30x30.png') no-repeat center left;
+}
+
+.ting-relation.ting-relation-dbcaddihasreview h2 {
+    background: url('../images/icons/icon_book_30x30.png') no-repeat center left;
+}
+
+.ting-relation.ting-relation-dbcaddihasonlineaccess h2 {
+ background: url('../images/icons/icon_mouse_30x30.png') no-repeat center left;
+}
+
+.ting-relation .meta {
+    border-bottom-width: 0px;
+    margin-bottom: 0em;
+    margin-top: 0em;
+}
+
+.ting-relation-dbcaddihasreview .field-type-ting-relation {
+    margin-top: 0em;
+}
+
+.holdings h2 {
+    background: url('../images/icons/icon_book_30x30.png') no-repeat center left;
+}
+
+#comments h2 {
+    background: url('../images/icons/icon_write_review_30x30.png') no-repeat center left;
+}
+
+/******* holdings table **********/
+table.availability-holdings-table {
+    margin-top:0.5em;
+    width:100%;
+    border-bottom:1px solid #e7e7e6;
+}
+
+table.availability-holdings-table td,
+table.availability-holdings-table th {
+    padding:0.2em 0 0.2em 0;
+}
+
+table.availability-holdings-table td + td,
+table.availability-holdings-table th + th {
+    text-align: center;
+    padding: 0.2em 0.2em;
+}
+
+table.availability-holdings-table tr {
+    border:0;
+    background-color:#FFFFFF;
+}
+
+table.availability-holdings-table .availability-holdings-last-row {
+    font-weight:bold;
+}
+
+
+/* ******** ting-reference-reverse ****** */
+.field-type-ting-reference-reverse .field-label {
+    margin-top:1em;
+}
+
+/* ***** ting-relation & holdings & ting-reference-reverse ****** */
+
+.field-type-ding-availability-holdings,
+.field-type-ting-relations,
+.ting-relation-hasreview,
+.field-type-ting-reference-reverse {
+    padding-bottom: 0.5em;
+}
+
+.holdings ul,
+.ting-relation,
+.field-type-ting-reference-reverse {
+    background-color: #fff;
+    border-bottom: 1px solid #e7e7e6;
+}
+
+.ting-relation {
+    padding-bottom: 0.5em;
+    margin-bottom: 1.5em;
+    margin-top: 2em;
+}
+
+
+.field-type-ding-availability-holdings,
+.field-type-ting-relations {
+    padding: 1.5em 0 0 0;
+}
+
+.ting-relation.ting-relation-hasauthordescription h3,
+.ting-relation.ting-relation-hasreview h3 {
+    padding: 0.5em 0 0 0;
+}
+
+.ting-relation.ting-relation-hasauthordescription div,
+.ting-relation.ting-relation-hasreview div {
+    padding: 0 0 0.25em 0;
+}
+
+.ting-relation.ting-relation-hasauthordescription p {
+    padding: 0em;
+}
+
+.ting-relation.ting-relation-hasreview a {
+    display: block;
+}
+
+.holdings ul {
+    padding: 0.5em 0em;
+}
+
+.holdings ul li {
+    list-style-type: none;
+}
+
+
+/* ***** pager ***** */
+
+.page-search-meta .mkdru-pager {
+    float: none;
+    text-align: center;
+    width: 100%;
+    font-size: 0.9em;
+}
+
+.item-list .pager {
+    position: static;
+    border-top: 3px solid #ffffff;
+    bottom: 0;
+    background-color: #ffffff;
+    padding: 0.5em;
+    margin-bottom: 0;
+    font-size: 0.9em;
+}
+
+.item-list .pager.sticky {
+    position: fixed;
+    border-top: 1px solid #E7E7E6;
+}
+
+#sticky-pager {
+    position: fixed;
+    bottom: 0;
+    background-color: #ffffff;
+    padding: 0.5em;
+    border-top: 1px solid #E7E7E6;
+    margin-bottom: 0;
+}
+
+.mkdru-pager span,
+.item-list .pager li {
+    margin: 0;
+    padding: 0.5em 0.25em;
+}
+
+.item-list .pager li.pager-ellipsis {
+    padding: 0.5em 0em 0.5em 0em;
+}
+
+.item-list .pager li.pager-first {
+    padding: 0.5em 0.25em 0.5em 0em;
+}
+
+.mkdru-pager span.mkdru-pager-prev,
+.item-list .pager li.pager-previous {
+    padding: 0.5em 0.25em;
+}
+
+.mkdru-pager span.mkdru-pager-next,
+.item-list .pager li.pager-next {
+    padding: 0.5em 0.25em;
+}
+
+.item-list .pager li.pager-last {
+    padding: 0.5em 0em 0.5em 0.25em;
+}
+
+
+/* ***** page-ting-collection ***** */
+
+.page-ting-collection .ting-object-overview {
+    border: 0px solid #e7e7e6;
+    padding-bottom: 0.5em;
+}
+
+.page-ting-collection .ting-object-additional .left-column img {
+    margin-right: 2em;
+}
+
+.page-ting-collection .ting-object-additional .ting-object {
+    padding-top: 1em;
+    padding-bottom: 1em;
+    border-bottom: 1px solid #e7e7e6;
+}
+
+.page-ting-collection .ting-object-details {
+    border: 0px solid #369;
+}
+
+.page-ting-collection .ting-object-additional {
+    border: 0px solid #963;
+}
+
+.page-ting-collection .ting-overview {
+    padding-bottom: 4em;
+}
+
+.page-ting-collection .ting-object-additional .ting-overview {
+    padding-bottom: 0em;
+}
+
+.pane-ding-availability-legend {
+    clear: both;
+}
+
+.page-ting-collection .ting-object .availability-legend {
+    display: block;
+}
+
+.page-ting-collection h2.materials-heading {
+    display: block;
+    font-size: 1.2em;
+    line-height: 40px;
+    padding-left: 40px;
+    padding-bottom: 0em;
+    background: url("../images/icons/icon_book_30x30.png") no-repeat scroll left center transparent;
+    min-height: 40px;
+}
+
+
+/* ***** pane-ting-ting-collection-types ***** */
+
+.pane-ting-ting-collection-types,
+.pane-ting-ting-object-types {
+    padding-top: 0em;
+}
+
+.pane-ting-ting-collection-types .pane-content ,
+.pane-ting-ting-object-types .pane-content {
+    padding-top: 0;
+}
+
+.pane-ting-ting-collection-types h2,
+.pane-ting-ting-object-types h2,
+.pane-ting-ting-relation-anchors h2 {
+    font-size: .9em;
+    font-weight: bold;
+    padding: .7em .5em;
+}
+
+.pane-ting-ting-collection-types h2 + .pane-content .item-list ul li.first a,
+.pane-ting-ting-object-types h2 + .pane-content .item-list ul li.first a {
+  border-top: none;
+}
+
+.pane-ting-ting-collection-types .ting-collection-types-header {
+    border-bottom: 1px solid #E5E8E4;
+    border-top: 1px solid #E7E7E6;
+    padding: 0.35em 0.5em;
+}
+
+.pane-ting-ting-collection-types ul,
+.pane-ting-ting-object-types ul {
+    list-style: none outside none;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin: 0em 16px 0em 0em;
+}
+
+.pane-ting-ting-collection-types ul li ,
+.pane-ting-ting-object-types ul li {
+    margin: 0;
+    padding: 0.25em 0 0.25em 1.5em;
+    border-bottom: 1px solid #e7e7e6;
+}
+
+/* ***** Primary tabs ***** */
+
+.page-search #main div.tabs {
+  display: none;
+}
+
+.page-search ul.primary,
+.page-user ul.secondary,
+.ting-search-carousel ul.search-controller {
+  font-size: 0.9em;
+  white-space: nowrap;
+  border-bottom: 0px solid #eeeff0;
+  background: url(../images/bg_primary_tab.png) no-repeat left bottom;
+  margin: 0em;
+  padding: 0em 0em 4px 0em;
+  height: auto;
+  font-weight: bold;
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+
+.page-search ul.primary:after,
+.page-user ul.secondary:after,
+.ting-search-carousel ul.search-controller:after {
+    clear: both;
+    content: ".";
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+
+.page-search ul.primary > span,
+.page-user ul.secondary > span {
+  border-style: none;
+  width: auto;
+  display: block;
+  float: left;
+}
+
+.page-search ul.primary li,
+.page-user ul.secondary li,
+.ting-search-carousel ul.search-controller li {
+  border-color: #eeeff0;
+  border-width: 2px;
+  background: url(../images/bg_primary_tab_li_left.png) repeat-y left top;
+  border-style: solid solid none none;
+  line-height: 1.8em;
+  height: 2em;
+  display: block;
+  float: left;
+  margin-top: 0.6em;
+  margin-right: 0;
+  margin-bottom: 0;
+  margin-left: 0;
+  padding: 0em;
+}
+
+.page-search ul.primary span.last li,
+.page-user ul.secondary span.last li {
+  border-style: solid solid none none;
+}
+
+.page-search ul.primary li.active,
+.page-user ul.secondary li.active,
+.ting-search-carousel ul.search-controller li.active {
+  height: 2.8em;
+  line-height: 2.8em;
+  border-style: none;
+  margin-top: 0em;
+}
+
+.page-search ul.primary li a,
+.page-user ul.secondary li a,
+.ting-search-carousel ul.search-controller li a {
+  background-color: transparent;
+  border-style: none;
+  margin-right: 0em;
+  padding: 0.4em 1.2em;
+}
+
+.page-search ul.primary li.active a,
+.page-user ul.secondary li.active a,
+.ting-search-carousel ul.search-controller li.active a {
+  background: url(../images/bg_tabs_active.png) no-repeat center bottom;
+  padding: 0.8em 1.2em;
+}
+
+
+
+/* ***** Facetbrowser ****** */
+
+.page-search-meta .pane-ding-facetbrowser h2 {
+    display: none;
+}
+
+.pane-search-result .panel-col-first form fieldset,
+.page-search-ting .panel-col-first form fieldset,
+.page-search-meta .pane-ding-facetbrowser fieldset {
+    border-bottom: 0px solid #e7e7e6;
+    padding: 0;
+}
+
+.pane-search-result .panel-col-first form fieldset div.form-checkboxes,
+.page-search-ting .panel-col-first form fieldset div.form-checkboxes,
+.page-search-meta .pane-ding-facetbrowser fieldset div.form-checkboxes {
+    border-bottom: 0px solid #e7e7e6;
+}
+
+.pane-search-result .panel-col-first form fieldset div.form-checkboxes .form-item,
+.page-search-ting .panel-col-first form fieldset div.form-checkboxes .form-item,
+.page-search-meta .pane-ding-facetbrowser fieldset div.form-checkboxes .form-item {
+    margin: 0;
+    padding: 0;
+    font-size: 0.8em;
+    text-indent: -1.2em;
+    margin-left: 1.2em;
+}
+
+.page-search-meta .pane-ding-facetbrowser fieldset input[type="checkbox"] {
+    margin-right: 0.5em;
+}
+
+
+.pane-search-result .panel-col-first form fieldset div.form-checkboxes label.option,
+.page-search-ting .panel-col-first form fieldset div.form-checkboxes label.option,
+.page-search-meta .pane-ding-facetbrowser fieldset div.form-checkboxes label.option {
+    font-weight: bold;
+}
+
+.pane-search-result .panel-col-first form legend,
+.page-search-ting .panel-col-first form legend,
+.page-search-meta .pane-ding-facetbrowser legend {
+    display: block;
+    width: 100%;
+    font-weight: bold;
+}
+
+.pane-search-result .panel-col-first form legend span,
+.page-search-ting .panel-col-first form legend span,
+.page-search-meta .pane-ding-facetbrowser legend span {
+    border-top: 2px solid #e7e7e6;
+    border-bottom: 1px solid #e5e8e4;
+    padding: 0.35em 0.5em 0.35em 0.5em;
+}
+
+.pane-search-result .panel-col-first span#expand_more,
+.pane-search-result .panel-col-first span#expand_less,
+.page-search-ting .panel-col-first span#expand_more,
+.page-search-ting .panel-col-first span#expand_less,
+.page-search-meta .pane-ding-facetbrowser span#expand_more,
+.page-search-meta .pane-ding-facetbrowser span#expand_less {
+    display: block;
+    font-size: 0.8em;
+    font-weight: bold;
+    border-top: 1px solid #e7e7e6;
+    border-bottom: 1px solid #e7e7e6;
+    padding: 0.25em 0em 0.25em 1.3em;
+    margin: 0em 16px 0em 0em;
+    cursor: pointer;
+}
+
+div.ajax-progress {
+    position: absolute;
+    padding: 0.5em;
+    border: 1px solid #000;
+    background-color: #fff;
+}
+
+div.ajax-progress .throbber {
+    float: left;
+
+}
+
+div.ajax-progress .message {
+    padding-left: 40px;
+}
+
+.panel-separator {
+  display: none;
+}
+
+
+/* ***** reservation button ***** */
+
+/* #ding-reservation-reserve-form */
+.ting-object form {
+  text-align: right;
+  margin-top: 0.5em;
+}
+
+/* #ding-reservation-reserve-form input */
+.ting-object form input {
+  border-width: 0;
+  font-weight: bold;
+  font-size: 0.9em;
+  padding: 0.2em 1em;
+}
+
+
+/* ***** additional links ***** */
+
+.field-type-ding-entity-buttons,
+.field-type-ting-relation {
+  margin-top: 0.5em;
+  float: right;
+  margin-left: 0.5em;
+}
+
+.field-type-ding-entity-buttons p.ding-entity-button,
+.page-user-bookmarks p.ding-entity-button {
+  padding: 0em 1em;
+  font-weight: bold;
+  font-size: 0.9em;
+  float:left;
+  text-align: center;
+}
+
+.field-type-ting-sfx,
+.field-type-ting-infomedia {
+  margin-top: 0.5em;
+  text-align: right;
+}
+
+.field-type-ting-relation .field-items.rounded-corners,
+.field-type-ding-entity-buttons .field-items.rounded-corners,
+.field-type-ting-infomedia .field-items.rounded-corners,
+.field-type-ting-sfx .field-items.rounded-corners {
+  display: inline;
+  border-width: 1px;
+  border-style: solid;
+  font-weight: bold;
+  font-size: 0.9em;
+  padding: 0.1em 1em;
+}
+
+.field-type-ding-entity-buttons .field-items.rounded-corners .field-item,
+.field-type-ting-infomedia .field-items.rounded-corners .field-item,
+.field-type-ting-sfx .field-items.rounded-corners .field-item {
+  display: inline;
+}
+
+.ting-object .field-type-ting-sfx .field-label,
+.ting-object .field-type-ting-sfx .field-label,
+.ting-object .field-type-ting-infomedia .field-label {
+  min-height: 40px;
+  padding-left: 40px;
+  border-bottom: 2px solid #e7e7e6;
+  line-height: 40px;
+  min-height: 40px;
+  font-size: 1.1em;
+  background: url('../images/icons/icon_mouse_30x30.png') no-repeat center left;
+}
+
+.field-type-ting-infomedia .field-label,
+.field-type-ting-sfx .field-label {
+  text-align: left;
+  margin-bottom: .5em;
+}
+
+.ting-relation.ting-relation-dbcbibispartofmanifestation {
+    margin-bottom: 0.5em;
+    margin-top: 0em;
+    padding-bottom: 0.5em;
+}
+
+.ting-relation.ting-relation-dbcbibispartofmanifestation > h2 {
+  min-height: 40px;
+  padding-left: 40px;
+  border-bottom: 2px solid #e7e7e6;
+  line-height: 40px;
+  min-height: 40px;
+  font-size: 1.1em;
+  background: url('../images/icons/icon_book_30x30.png') no-repeat center left;
+}
+
+.ting-relation.ting-relation-dbcbibispartofmanifestation > h3 {
+  display: none;
+}
+
+/* ***** search_result_toggle_amount ***** */
+
+div.pane-ding-toggle-format-toggle div.pane-content {
+  font-weight: bold;
+  font-size: 0.8em;
+  text-align: right;
+}
+
+.pane-ding-toggle-format-toggle {
+  float: right;
+}
+
+
+/* ***** 'sort by' & 'records shown' ***** */
+
+#ting-search-sort-form label {
+  display: inline;
+}
+
+.pane-ting-search-sort-form .pane-content,
+.pane-ting-search-records-per-page .pane-content {
+  padding-top: 0;
+}
+
+.pane-ting-search-sort-form,
+.pane-ting-search-records-per-page {
+  display: block;
+  float: left;
+  font-weight: bold;
+  font-size: 0.8em;
+  margin-right: 0.5em;
+}
+
+.pane-ting-search-records-per-page {
+  margin-left: 1em;
+}
+
+#ting-search-records-per-page a {
+  margin: 0 .25em;
+}
+
+#ting-search-records-per-page a.selected {
+  text-decoration: underline;
+}
+
+#ting-search-sort-form div.form-item-sort {
+  padding: 0;
+  display: inline;
+}
+
+#ting-search-sort-form .description {
+  display: none;
+}
+
+#ting-search-sort-form .form-item-sort select {
+  width: 9em;
+}
+
+
+/* ***** ting-search-amount-block ***** */
+.ting-search-amount-block {
+  font-size: 0.8em;
+  padding-top: 0.25em;
+  padding-bottom: 0.75em;
+}
+
+
+/* ***** extended search ***** */
+
+#edit-advanced .fieldset-wrapper {
+  background-color: #fff;
+  border-style: solid;
+  border-top-width: 1px;
+  border-right-width: 1px;
+  border-bottom-width: 1px;
+  border-left-width: 1px;
+  text-align: left;
+  clear: both;
+  padding: 0.5em 0;
+}
+
+#edit-advanced .fieldset-wrapper input {
+  display: block;
+  margin-left: 12.23em;
+  border-width: 1px;
+  font-size: 0.9em;
+  font-weight: bold;
+  height: 1.4em;
+  line-height: 1.4em;
+  padding: 0 0.25em 0.2em;
+}
+
+/* ***** availability-legend ***** */
+
+.availability-legend-item {
+    margin-right: 1.5em;
+}
+
+
+/* ***** left menu ***** */
+
+.panel-col-first .item-list,
+.panel-col-first #tabs-primary-menu {
+    margin-bottom: 2em;
+}
+
+.panel-1col #tabs-primary-menu ul,
+.panel-2col .panel-col-first ul,
+.panel-3col-stacked .panel-col-first ul,
+.panel-3col .panel-col-first ul {
+    border-width: 0px;
+    margin: 0em;
+    padding-left: 0;
+    white-space: normal;
+    font-size: 0.8em;
+}
+
+.panel-1col #tabs-primary-menu ul li,
+.panel-2col .panel-col-first ul li,
+.panel-3col-stacked .panel-col-first ul li,
+.panel-3col .panel-col-first ul li {
+    padding-left: 0;
+    margin: 0em;
+    width: 100%;
+    font-weight: bold;
+    border-width: 0;
+    display: block;
+    list-style-type: none;
+}
+
+.panel-1col #tabs-primary-menu ul li span,
+.panel-2col .panel-col-first ul li span,
+.panel-3col-stacked .panel-col-first ul li span,
+.panel-3col .panel-col-first ul li span {
+    display: block;
+}
+
+.panel-1col #tabs-primary-menu ul li a,
+.panel-2col .panel-col-first ul li a,
+.panel-3col-stacked .panel-col-first ul li a,
+.panel-3col .panel-col-first ul li a {
+    margin-right: 0;
+    padding: 0.5em 1em;
+    border-width: 0px;
+    color: #000;
+    background-color: #fff;
+    display: block;
+    border-bottom: 1px solid #BBBBBB;
+}
+
+.panel-1col #tabs-primary-menu ul li.first a,
+.panel-2col .panel-col-first ul li.first a,
+.panel-3col-stacked .panel-col-first ul li.first a,
+.panel-3col .panel-col-first ul li.first a {
+    border-top: 1px solid #BBBBBB;
+}
+
+.panel-1col #tabs-primary-menu ul li.first a.active,
+.panel-2col .panel-col-first ul li.first a.active,
+.panel-3col-stacked .panel-col-first ul li.first a.active,
+.panel-3col .panel-col-first ul li.first a.active {
+    margin-right: 0px;
+    border-bottom: 1px solid #999999;
+}
+
+
+/* ***** page-user ***** */
+
+.page-user #main .region {
+    padding-top: 1em;
+}
+
+.page-user h2 {
+    width: 100%;
+    padding: 0 0 1em;
+}
+
+.page-user #tabs-secondary-menu {
+    padding: 0;
+}
+
+.page-user .ting-object h2 {
+    padding: 0;
+}
+
+.page-user .pane-page-tabs h2 {
+    padding: 0em 0 0.5em 0;
+}
+
+/* not with 1col panel
+.page-user-status .pane-reservations,
+.page-user-status .pane-loans {
+    padding: 0.5em 0 0;
+    clear: both;
+}
+*/
+
+.pane-reservations + .panel-separator + .pane-reservations {
+    padding-top: 2em;
+}
+
+.page-user-status h2 {
+    padding: 0em 0 0.5em;
+}
+
+.page-user-status .pane-content {
+    padding: 0em 0 1em;
+}
+
+.delete-reservation, .delete-reservations, .update-reservations {
+    display: inline;
+}
+
+.page-user-status input {
+    margin-right: 1em;
+    font-weight: bold;
+    border-width: 0;
+    font-size: 0.9em;
+    height: 1.8em;
+    line-height: 1.6em;
+    padding: 0 0.5em 0.2em 0.5em;
+}
+
+.page-user-status input[type=checkbox] {
+  background-color: #fff;
+  border-radius: 0px;
+  height: 1em;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+
+.page-user-status input[type=checkbox][disabled] {
+  outline: 0px solid gray;
+}
+
+
+.page-user-status .ting-object .item-list ul li {
+    margin: 0 0 0.25em 0;
+}
+
+
+/* Bug #166 : checkbox-overlay */
+.page-user .checkbox-overlay {
+  height: 19px;
+  width: 19px;
+  background: transparent url('../images/disabled_checkbox_stroke.png') no-repeat center center;
+  position: relative;
+  top: -1.2em;
+  left: -0.15em;
+}
+
+.page-user #main table {
+    width: 100%;
+}
+
+.page-user #main .panel-1col table {
+    width: 75%;
+}
+
+.page-user #main form table {
+    margin-bottom: 0.5em;
+}
+
+.page-user #ding-debt-debts-form {
+    padding-top: 0.5em;
+}
+
+.page-user .pane-reservations .pane-content,
+.page-user .pane-debts .pane-content {
+    padding: 1.5em 0 0.5em;
+}
+
+.page-user #main form > div > span + span {
+    margin-right: 0.5em;
+}
+
+.page-user #main form table tr {
+    background-color: #fff;
+    border-bottom: 1px solid #CCCCCC;
+}
+
+.page-user #main form table td {
+    vertical-align: top;
+    padding: 0.5em 0;
+}
+
+.page-user #main form table .ting-object div.creator {
+    padding-bottom: 0em;
+}
+
+.page-user #main form table .order-id,
+.page-user #main form table .pickup-order-id {
+    font-size: 0.8em;
+    padding-bottom: 0em;
+}
+
+.page-user #main form table td.created-date,
+.page-user #main form table td.pickup-date,
+.page-user #main form table td.pickup-branch,
+.page-user #main form table td.expire-date,
+.page-user #main form table td.queue-number,
+.page-user #main form table td.operations,
+.page-user #main table td.feedate,
+.page-user #main table td.feetitle,
+.page-user #main table td.feeamount {
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.page-user #main form table td.queue-number {
+  text-align: right;
+  padding-right: 2em;
+}
+
+.page-user #main table td.feeamount,
+.page-user #main table th.feeamount {
+  text-align: right;
+  padding-left: 2em;
+  padding-right: 0em;
+}
+
+.page-user #main form table td.created-date,
+.page-user #main form table td.pickup-date,
+.page-user #main form table td.expire-date,
+.page-user #main table th.feeamount,
+.page-user #main table td.feeamount {
+    width: 7em;
+}
+
+.page-user #main table td.feedate,
+.page-user #main table td.feetitle,
+.page-user #main table td.feeamount {
+    background-color: #ffffff;
+    padding: 0.5em 0em;
+}
+
+.page-user #main table th.feedate,
+.page-user #main table th.feetitle,
+.page-user #main table th.feeamount {
+    background-color: #ffffff;
+    padding: 0.5em 0em 0.25em;
+}
+
+.page-user #main table td.fee-invoice-note {
+    background-color: #ffffff;
+    padding: 0.5em 0em 0.25em;
+    font-size: 0.8em;
+    border-bottom: 3px solid #CCCCCC;
+}
+
+.pane-ding-dibs-dibs-terms-of-sale {
+    padding-top: 1em;
+}
+
+.page-user #main .pay-button {
+    float: right;
+}
+
+.page-user #main .pay-button input {
+    margin-right: 0;
+}
+
+.page-user #main form table td.pickup-branch {
+    width: 8em;
+}
+
+.page-user #main form table td.queue-number {
+    width: 4em;
+}
+
+.page-user .ting-object .right-column {
+    width: auto;
+}
+
+.page-user #main form table td.operations {
+    width: auto;
+    text-align: right;
+    padding-left: 2em;
+    padding-right: 0em;
+}
+
+.page-user #main form table td.operations .edit-loan {
+    color: #fff;
+    background-color: red;
+    padding: 0em 1em;
+}
+
+.page-user #main form table td.operations .edit-loan a {
+    color: #fff;
+}
+
+.renew-loans-button, .renew-loan-button {
+    display: inline;
+}
+
+.page-user-bookmarks p.ding-entity-button,
+.page-user-bookmarks .ding-entity-button-reserve {
+    float: right;
+    clear: both;
+    margin-bottom: 0.5em;
+    margin-left: 0.5em;
+}
+
+.page-user-bookmarks .ding-entity-button-reserve {
+    margin-top: 0;
+}
+
+.page-user-bookmarks .ding-entity-button-reserve input {
+    padding-right: 1em;
+    padding-left: 1em;
+    margin-right: 0;
+}
+
+.page-user-bookmarks table td + td + td {
+    text-align: right;
+}
+
+.page-user-bookmarks table td {
+    background-color: #fff;
+    vertical-align: top;
+    padding-top: 0.5em;
+}
+
+
+
+/* ***** page-user profile ***** */
+
+.page-user .profile {
+  margin: 0;
+}
+
+.page-user .profile h3 {
+  padding: 0.5em 0;
+}
+
+.page-user .profile dl {
+  padding-top: 0.5em;
+}
+
+.page-user .profile .field-name-field-period-of-interest .field-label,
+.page-user .profile .field-name-field-reservation-pause .field-label,
+.page-user .profile dt {
+  margin: 0;
+  width: 14em;
+  min-height: 1.5em;
+  float: left;
+  clear: left;
+}
+
+.page-user .profile .field-name-field-period-of-interest .field-items,
+.page-user .profile .field-name-field-reservation-pause .field-items,
+.page-user .profile dd {
+  margin: 0;
+  min-height: 1.5em;
+  padding-left: 14em;
+}
+
+.page-user .profile .user-adress {
+}
+
+.page-user .profile .user-adress p {
+  padding-bottom: 0em;
+}
+
+/* ***** page-user edit ***** */
+
+.page-user #user-profile-form label {
+  display: block;
+  margin: 0;
+  width: 14em;
+  height: 1.6em;
+  float: left;
+}
+
+.page-user #user-profile-form input,
+.page-user #user-profile-form select {
+  display: block;
+  margin: 0 0 0 16em;
+  height: 1.6em;
+  padding-left: 0.5em;
+  width: 16em;
+}
+
+.page-user #user-profile-form select {
+  margin: 0 0 0 14.4em;
+  width: 15.2em;
+}
+
+.page-user #user-profile-form div.password-strength,
+.page-user #user-profile-form div.password-confirm,
+.page-user #user-profile-form div.password-suggestions {
+  display: none;
+}
+
+.page-user #user-profile-form fieldset {
+  padding: 0.5em 0;
+  margin: 0em;
+}
+
+.page-user #user-profile-form legend {
+  padding: 0.5em 0 0;
+  font-weight: bold;
+  font-size: 1.6em;
+}
+
+.page-user .container-inline-date > .form-item {
+    border-width: 0;
+    display: block;
+    margin: 0;
+}
+
+.page-user .container-inline-date .date-padding {
+    padding: 0;
+}
+
+.page-user #user-profile-form .container-inline-date label,
+.page-user #user-profile-form .container-inline-date input {
+  float: left;
+  margin: 0 0 0 0em;
+  width: 7em;
+}
+
+.page-user #user-profile-form .date-no-float {
+  clear: none;
+  width: 14.4em;
+  float: left;
+}
+
+.page-user .container-inline-date .form-item .form-item {
+    float: none;
+}
+
+.page-user #user-profile-form input#edit-submit {
+  margin: 0;
+  height: 1.6em;
+  padding-left: 0.5em;
+  width: auto;
+}
+
+/* ***** Popup box ***** */
+
+.ui-dialog {
+    font: 100%/1.0 arial, helvetica, sans-serif;
+    line-height: 1.3em;
+    border-width: 2px;
+    border-style: solid;
+    width: 15em;
+}
+
+.ui-dialog .ui-dialog-title {
+    float: none;
+    padding: 0.5em 16px 0.2em 0.5em;
+    font-weight: bold;
+}
+
+.ui-dialog .ui-widget-header {
+    text-align: left;
+    background-image: none;
+    border-width: 0px;
+}
+
+.ui-dialog .ui-widget-content {
+    text-align: left;
+    background-image: none;
+    border-width: 0px;
+}
+
+.ui-dialog .ui-widget-content .messages {
+    border-width: 0px;
+}
+
+.ui-dialog .ui-dialog-titlebar {
+    padding: 0.5em 1em 0.3em 0em;
+}
+
+.ui-dialog .ui-dialog-titlebar-close span {
+    display: block;
+    margin: 1px;
+}
+
+.ui-dialog .ui-dialog-titlebar-close {
+    height: 15px;
+    width: 15px;
+    padding: 0 1px;
+    margin: 0px;
+    position: absolute;
+    right: 0em;
+    top: 0%;
+}
+
+.ui-dialog .ui-widget-header .ui-icon {
+    background-image: url(../images/popup_close.png);
+    background-position: 0px 0px;
+    height: 13px;
+    width: 13px;
+}
+
+.ui-dialog form input.form-text,
+.ui-dialog form select,
+.ui-dialog form textarea {
+    width: 250px;
+}
+
+.ui-dialog form input.form-text {
+    border-radius: 4px 4px 4px 4px;
+    border-width: 1px;
+}
+
+.ui-dialog form input.form-submit {
+    border-radius: 4px 4px 4px 4px;
+    font-weight: bold;
+    border-width: 0;
+    font-size: 0.9em;
+    height: 1.8em;
+    line-height: 1.6em;
+    padding: 0 1em.5em;
+}
+
+/* ***** Autocomplete ***** */
+
+#autocomplete li {
+    padding: 0em 0.5em;
+}
+
+#autocomplete li div.autocomplete_delimiter {
+    font-weight: bold;
+}
+
+
+/* ***** block-locale-language ***** */
+
+#block-locale-language {
+    text-align: right;
+    position: absolute;
+    top: 1em;
+    width: 1016px;
+}
+
+#block-locale-language ul {
+  list-style: none outside none;
+  margin-right: 0.5em;
+}
+
+#block-locale-language li {
+  display: block;
+  float: right;
+  margin-right: 0.5em;
+}
+
+/* ***** Library list page ***** */
+
+#ding-library-page .library-list .views-row {
+  border-bottom: 1px solid #ccc;
+  font-size: 0.9em;
+  line-height: 1.4em;
+  margin-bottom: 1em;
+  list-style-type: none;
+  padding-bottom: 1em;
+}
+
+#ding-library-page .library-list .views-row-last {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+#ding-library-page .library-list .opening-hours {
+  float: right;
+  width: 140px;
+}
+
+#ding-library-page .library-list .list-image {
+  float: left;
+  height: 140px;
+  width: 140px;
+}
+
+/* Shift middle column fields in to make room for the image. */
+#ding-library-page .library-list .middle-col {
+  margin-left: 160px;
+}
+
+#ding-library-page .library-list .middle-col.address a {
+  font-weight: bold;
+  padding-left: 18px;
+}
+
+#ding-library-page .library-list .middle-col a:hover {
+  color: #777;
+}
+
+#ding-library-page .library-list .title {
+  font-size: 1em;
+  padding: 0;
+}
+
+#ding-library-page .library-list .title a {
+  color: #444;
+}
+
+#ding-library-page .library-list .email a {
+  color: #444;
+  text-decoration: underline;
+}
+
+#ding-library-page .library-list .email a:hover {
+  color: #777;
+}
+
+/* Hide the country label, not really necessary here. */
+#ding-library-page .library-list .country {
+  display: none;
+}
+
+/* Library map */
+.pane-ding-library-map {
+  background: #fff url('../images/map-loader.gif') center center no-repeat;
+  margin-bottom: 1em;
+}
+
+.pane-ding-library-map .openlayers-container-map-ding_library_map {
+   border: 1px solid black;
+}
+
+.pane-ding-library-map .olPopup {
+  background-color: black; /* The Fallback */
+  background-color: rgba(0, 0, 0, 0.7);
+  border: 2px solid white;
+  color: white;
+  font-size: 1em;
+  line-height: 14px;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  border-radius:5px;
+
+  /* This is nasty, but apparently, there's no way to change width or
+   * height without editing the code that generates the popups.
+   */
+  height: 120px !important;
+  width: 200px !important;
+}
+
+.pane-ding-library-map #tooltip_close {
+  display: none;
+}
+
+/* ***** Library front page ***** */
+#ding-library-front .pane-node-ding-library-image {
+  margin-bottom: 20px;
+}
+
+/* ***** Library panes ***** */
+#ding-library-front .pane-node-field-opening-hours h2,
+#ding-library-front .ding-library-contact h2,
+#ding-library-about .pane-node-field-opening-hours h2,
+#ding-library-about .ding-library-contact h2 {
+  padding-left: 35px;
+  padding-top: 0.15em;
+  background: url(../images/icons/icon_door_27x27.png) no-repeat;
+  font-weight: normal;
+  font-size: 1.2em;
+  border-bottom: 2px solid #D5D3D3;
+  margin-bottom: 0.5em;
+}
+
+#ding-library-front .pane-node-field-opening-hours,
+#ding-library-front .ding-library-contact,
+#ding-library-about .pane-node-field-opening-hours,
+#ding-library-about .ding-library-contact {
+  padding-bottom: 1.25em;
+  border-bottom: 1px solid #D5D3D3;
+  margin-bottom: 1.75em;
+}
+
+#ding-library-front .ding-library-contact h2,
+#ding-library-about .ding-library-contact h2 { background: url(../images/icons/icon_phone_27x27.png) no-repeat; }
+#ding-library-about .ding-library-contact .field-label, #ding-library-front .ding-library-contact .field-label { padding-right: 5px; }
+
+/* ***** Library about page ***** */
+#ding-library-about .pane-node-ding-library-image {
+  margin-bottom: 25px;
+}
+
+/* ***** Library menu block ***** */
+
+#header .library-menu .wrapper {
+  height: 59px;
+}
+
+#header .library-menu h2 {
+  font-weight: normal;
+  text-transform: uppercase;
+  font-size: 16px;
+  float: left;
+  margin: 10px 0 0 20px;
+  padding: 10px 20px 0 0;
+  height: 30px;
+}
+
+#header .library-menu .links {
+  float: left;
+  margin-top: 10px;
+}
+
+#header .library-menu ul.links {
+  background: transparent;
+  border: none;
+  margin-top: 19px;
+}
+
+#header .library-menu ul.links li {
+  height: 17px;
+}
+
+#header .library-menu ul.links li.last {
+  border-right: none;
+}
+
+#header .library-menu ul.links li a {
+  font-size: 16px;
+  padding: 0;
+  margin: -3px 10px 0;
+  display: block;
+}
+
+/* ***** Comments ***** */
+
+#comments {
+  margin-top: 1em;
+}
+
+#comments h2 {
+  margin-top: 2em;
+  padding-bottom: 0;
+}
+
+#comment-form div#edit-actions > div {
+  margin-right: 1em;
+  float: left;
+}
+
+#comment-form .form-item, #comments .form-actions {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+#comment-form .form-item label {
+  width: 25%;
+  float: left;
+}
+
+#comment-form .form-item .form-textarea-wrapper,
+#comment-form .form-actions {
+  margin-left: 25%;
+  width: 75%;
+}
+
+#comment-form .filter-wrapper {
+  margin-left: 25%;
+  padding: 0.5em 0;
+}
+
+#comment-form .filter-help {
+  float: none;
+  font-size: 0.9em;
+  padding: 0;
+}
+
+#comment-form .filter-help p {
+  padding: 0 0 0.5em;
+}
+
+.comment {
+  padding: 0.5em 0 0.5em;
+  border-bottom: 1px solid #E7E7E6;
+}
+
+.comment .author {
+  font-weight: bold;
+  padding: 0 0 0.25em;
+  float: left;
+}
+
+.comment .divider {
+  margin: 0 0.5em;
+  float: left;
+  padding: 0 0 0.25em;
+}
+
+.comment .created-date {
+  display: block;
+  padding: 0 0 0.25em;
+}
+
+.comment ul.links {
+  float: right;
+}
+
+li.comment-add.rounded-corners,
+.comment li.rounded-corners {
+  display: inline;
+  border-width: 1px;
+  border-style: solid;
+  font-weight: bold;
+  font-size: 0.9em;
+  padding: 0.1em 1em;
+}
+
+li.comment-add.rounded-corners a,
+.comment li.rounded-corners a {
+  display: inline;
+}
+
+.ding-user-comment-forbidden-form {
+float:right;
+}
+
+.ding-user-comment-forbidden-form form {
+float:left;
+}
+
+.ding-user-comment-forbidden-form span {
+margin-left:0.5em;
+}
+
+/* ***** Metropol frontpage hack ***** */
+/* Don't show 'Der er ikke blevet oprettet forsideindhold endnu.' */
+
+div#first-time {
+  display: none;
+}
+
+/*
+ * Following three rules fixes the 'submit buttons swap place' bug.
+ */
+.progress-disabled {
+  float: none;
+}
+
+.ajax-progress {
+  float: none;
+  display: inline-block;
+}
+
+.ajax-progress .message {
+  padding-left: 20px;
+}
+
+
+/*
+ * Ting carusel
+ */
+
+.ting-search-carousel .ting-search-results {
+   -moz-box-shadow: 1px 1px 6px #ababab;
+   -webkit-box-shadow: 1px 1px 6px #ababab;
+   box-shadow: 1px 1px 6px #ababab;
+}
+
+
+.ting-search-carousel ul.search-controller {
+    background-image: none;
+    padding-bottom: 0;
+    height: auto;
+}
+
+.ting-search-carousel ul.search-controller li.active {
+    position: relative;
+    top: 1px;
+    z-index: 100;
+}
+
+.ting-search-carousel .ting-search-results {
+    height: 200px;
+    position: relative;
+}
+
+.ting-search-carousel .ting-search-results .subtitle {
+    font-size: 2.4em;
+    line-height: 1.1em;
+    text-transform: none;
+    margin: 0.5em 0 0 1.2em;
+    padding: 0.5em 0.5em 0.5em 0;
+    width: 250px;
+}
+
+.ting-search-carousel .rs-carousel-action-disabled {
+    color: gray;
+    cursor: default;
+}
+
+.ting-search-carousel .rs-carousel-action-disabled {
+    background-position: 0 0 !important;
+    background-repeat: no-repeat;
+}
+
+.ting-search-carousel .rs-carousel-action-prev {
+    left: -10px;
+}
+
+.ting-search-carousel .rs-carousel-action-next {
+    background-position: 0 0;
+    right: -10px;
+}
+
+.ting-search-carousel .rs-carousel-action-prev:hover, .ting-search-carousel .rs-carousel-action-next:hover {
+    background-position: 0 0;
+}
+
+.ting-search-carousel .rs-carousel-action-prev + .rs-carousel-action-disabled {
+    background-position: 0 0 !important;
+}
+
+.ting-search-carousel .rs-carousel-action-next, .ting-search-carousel .rs-carousel-action-prev {
+    height: 70px;
+    outline: none;
+    position: absolute;
+    text-indent: -9999px;
+    top: 60px;
+    width: 40px;
+}
+
+.pane-library-list {  border-bottom: 2px solid #1d1d1d; height:2em; margin-bottom:1em;}
+  .pane-library-list h2 { padding-bottom: 6px;float:left}
+  .pane-library-list .form-item-select-library { float:left; }
+  .pane-library-list .rightcontainer{ float:right;}
+  .pane-library-list .label { float:left; }
+  .pane-library-list .library-list-show { float:left; margin-left:0.5em; }
+  .pane-library-list #edit-select-library {float:left; position:relative;top:-1.1em;}
+
+
+/* OpenLayers Hack */
+.openlayers-map div#tooltip {
+  line-height: 1.2em;
+  font-size: 0.8em;
+}
+
+/* hide absentid for alma user*/
+.field-name-field-absent-id{
+display:none;
+}
+
+/* hide phone id for alma user */
+.field-name-field-alma-phone-id {
+display:none;
+}

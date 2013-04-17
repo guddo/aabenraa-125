@@ -1,0 +1,12 @@
+name = DIBS example
+description = An example implementation of the DIBS API
+core = 7.x
+dependencies[] = dibs
+package = "dibs"
+
+; Information added by drupal.org packaging script on 2011-07-28
+version = "7.x-1.0-beta1"
+core = "7.x"
+project = "dibs"
+datestamp = "1311887815"
+
